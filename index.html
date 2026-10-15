@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="System Hunter — тренажёр собеседований на системного аналитика: интервью Junior–Senior, обучение, тесты, карта компетенций.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 26 26%27%3E%3Ccircle cx=%2713%27 cy=%2713%27 r=%279%27 fill=%27none%27 stroke=%27%23E0540A%27 stroke-width=%272.4%27/%3E%3Ccircle cx=%2713%27 cy=%2713%27 r=%272.8%27 fill=%27%23E0540A%27/%3E%3C/svg%3E">
+<title>System Hunter</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: sticky crosshair header + tabbed single-page app on a faint blueprint grid; content column 1120px */
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA; --ink:#13203A; --muted:#5A6678; --line:#D6DDE6;
+  --accent:#E0540A; --accent-ink:#FFFFFF; --accent-soft:#FCE8DA;
+  --ok:#0E7A6B; --ok-soft:#DCF1EC; --bad:#BF332D; --bad-soft:#F8E0DE; --warn:#B7791F; --warn-soft:#FBF0D9;
+  --grid:rgba(19,32,58,.055);
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C121E; --surface:#141C2B; --surface-2:#1A2436; --ink:#E4E9F1; --muted:#95A2B6; --line:#28344B;
+  --accent:#FF7B35; --accent-ink:#1B0D04; --accent-soft:#3A2416;
+  --ok:#3DC5AA; --ok-soft:#13312C; --bad:#F06D64; --bad-soft:#3A1D1D; --warn:#E6B45A; --warn-soft:#352A16;
+  --grid:rgba(228,233,241,.04); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0C121E; --surface:#141C2B; --surface-2:#1A2436; --ink:#E4E9F1; --muted:#95A2B6; --line:#28344B;
+  --accent:#FF7B35; --accent-ink:#1B0D04; --accent-soft:#3A2416;
+  --ok:#3DC5AA; --ok-soft:#13312C; --bad:#F06D64; --bad-soft:#3A1D1D; --warn:#E6B45A; --warn-soft:#352A16;
+  --grid:rgba(228,233,241,.04); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code,pre{font-family:var(--f-mono);font-size:.86em}
+code{background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+pre{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;line-height:1.5;margin:0}
+pre code{background:none;border:0;padding:0}
+
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:17px;letter-spacing:-.01em;text-decoration:none;color:var(--ink);white-space:nowrap}
+.logo svg{color:var(--accent)}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.tabs button{background:none;border:1px solid transparent;border-radius:999px;padding:6px 14px;font-weight:500;font-size:14.5px;color:var(--muted)}
+nav.tabs button:hover{color:var(--ink);border-color:var(--line)}
+nav.tabs button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+
+main{padding-block:28px 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4.6vw,48px);line-height:1.08;letter-spacing:-.02em}
+h2{font-family:var(--f-display);font-weight:500;font-size:clamp(21px,2.6vw,28px);line-height:1.2;letter-spacing:-.01em}
+h3{font-weight:600;font-size:18px;line-height:1.3}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:10px 16px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--surface);text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.lvl{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.num{font-variant-numeric:tabular-nums}
+
+/* Home */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;padding-block:12px 28px}
+.hero p.lead{font-size:18px;color:var(--muted);max-width:56ch;margin:16px 0 22px}
+.ladder{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.ladder ol{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column-reverse;gap:6px}
+.ladder li button{width:100%;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;text-align:left;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2)}
+.ladder li button .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.ladder li button .bar i{display:block;height:100%;background:var(--accent)}
+.ladder li button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ladder .lv{font-family:var(--f-display);font-size:12px;font-weight:700}
+.sections{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sec{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.sec:hover{border-color:var(--ink)}
+.sec .k{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.sec p{margin:0;color:var(--muted);font-size:14.5px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{border-top:2px solid var(--ink);padding-top:10px}
+.stat b{display:block;font-family:var(--f-display);font-size:30px;font-weight:500;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+
+/* Trainer */
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--surface-2);flex-wrap:wrap}
+.qbody{padding:22px 20px;display:flex;flex-direction:column;gap:18px}
+.qtext{font-size:clamp(19px,2.2vw,23px);font-weight:600;line-height:1.35}
+.progress{height:4px;background:var(--line)}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .3s}
+textarea{width:100%;min-height:130px;resize:vertical;font:inherit;font-size:15px;padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.answer{border-left:3px solid var(--ok);background:var(--ok-soft);padding:14px 16px;border-radius:0 8px 8px 0}
+.answer p{margin:0 0 8px}.answer p:last-child{margin:0}
+.follow{border:1px dashed var(--accent);border-radius:8px;padding:12px 14px;font-size:15px}
+.checks{display:flex;flex-direction:column;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer}
+.checks input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.checks label:has(input:checked){border-color:var(--ok);background:var(--ok-soft)}
+.timer{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.score-big{font-family:var(--f-display);font-size:64px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.verdict{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:600;font-size:14px}
+.v-ok{background:var(--ok-soft);color:var(--ok)}.v-warn{background:var(--warn-soft);color:var(--warn)}.v-bad{background:var(--bad-soft);color:var(--bad)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.barrow{display:grid;grid-template-columns:minmax(0,170px) 1fr 44px;gap:12px;align-items:center;font-size:14px}
+.track{height:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.track i{display:block;height:100%}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.list li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.list li:last-child{border-bottom:0}
+.setup{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.field{display:flex;flex-direction:column;gap:8px}
+.field > span{font-weight:600;font-size:14px}
+.switch{display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer}
+.switch input{accent-color:var(--accent);width:16px;height:16px}
+
+/* Learn */
+.learn{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:4px}
+.toc button{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid transparent;background:none;font-weight:500;font-size:15px}
+.toc button:hover{background:var(--surface)}
+.toc button[aria-current="true"]{background:var(--surface);border-color:var(--line)}
+.dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);flex:none}
+.dot.done{background:var(--ok);border-color:var(--ok)}
+article.lesson{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px clamp(18px,3vw,36px);display:flex;flex-direction:column;gap:18px}
+article.lesson p{margin:0;max-width:68ch}
+article.lesson ul{margin:0;padding-left:20px;max-width:68ch;display:flex;flex-direction:column;gap:6px}
+article.lesson h3{margin-top:6px}
+.takeaways{background:var(--accent-soft);border-radius:8px;padding:16px 18px}
+.takeaways ul{padding-left:20px}
+.defs{display:grid;grid-template-columns:minmax(0,180px) 1fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:760px}
+.defs dt,.defs dd{margin:0;padding:9px 12px;border-bottom:1px solid var(--line);font-size:15px}
+.defs dt{font-weight:600;background:var(--surface-2)}
+.defs dt:nth-last-of-type(1),.defs dd:last-child{border-bottom:0}
+
+/* Tests */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.tcard{display:flex;flex-direction:column;gap:10px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.tcard:hover{border-color:var(--ink)}
+.tcard .best{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted)}
+.tcard.exam{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tcard.exam .best,.tcard.exam .muted{color:color-mix(in srgb,var(--bg) 70%,var(--ink))}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;padding:12px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:15.5px;display:flex;gap:12px;align-items:flex-start}
+.opt .l{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.explain{font-size:15px;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+
+/* Map */
+.maptop{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+.radar text{fill:var(--muted);font-family:var(--f-body);font-size:10.5px}
+.legend{display:flex;gap:16px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table.matrix{border-collapse:collapse;min-width:1040px;width:100%;font-size:13.5px}
+.matrix th,.matrix td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;text-align:left}
+.matrix thead th{padding:10px 12px;background:var(--surface-2);font-family:var(--f-display);font-weight:500;font-size:13px;position:sticky;top:0}
+.matrix thead th.tgt{color:var(--accent)}
+.matrix tbody th{padding:12px;width:190px;font-weight:600;font-size:14px;background:var(--surface)}
+.matrix tbody th small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:12.5px}
+.matrix td{padding:0;width:170px}
+.matrix td button{display:block;width:100%;height:100%;min-height:96px;text-align:left;padding:10px 12px;border:0;background:none;font-size:13px;line-height:1.45;color:var(--muted)}
+.matrix td button:hover{background:var(--surface-2);color:var(--ink)}
+.matrix td.have button{background:var(--ok-soft);color:var(--ink)}
+.matrix td.need button{box-shadow:inset 0 0 0 2px var(--accent)}
+.matrix tr > *:last-child{border-right:0}
+.matrix tbody tr:last-child > *{border-bottom:0}
+.gaps{display:flex;flex-direction:column;gap:8px}
+.gap{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:14.5px;flex-wrap:wrap}
+.pips{display:inline-flex;gap:3px}
+.pips i{width:14px;height:6px;border-radius:2px;background:var(--line)}
+.pips i.on{background:var(--ok)}
+.pips i.tg{box-shadow:inset 0 0 0 1.5px var(--accent)}
+
+footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:13.5px}
+
+@media (max-width:900px){
+  .hero,.setup,.maptop,.learn{grid-template-columns:1fr}
+  .sections,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toc{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
+  .toc button{white-space:nowrap}
+}
+@media (max-width:520px){
+  nav.tabs{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}
+  nav.tabs button{white-space:nowrap}
+  .barrow{grid-template-columns:110px 1fr 40px}
+  .defs{grid-template-columns:1fr}
+  .defs dt{border-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" data-go="home" aria-label="System Hunter — на главную">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle cx="13" cy="13" r="9" stroke="currentColor" stroke-width="2"/><circle cx="13" cy="13" r="2.5" fill="currentColor"/><path d="M13 1v6M13 19v6M1 13h6M19 13h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      System Hunter
+    </a>
+    <nav class="tabs" aria-label="Разделы">
+      <button data-go="trainer">Тренажёр интервью</button>
+      <button data-go="learn">Обучение</button>
+      <button data-go="tests">Тесты</button>
+      <button data-go="map">Карта компетенций</button>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+<footer><div class="wrap">System Hunter · тренажёр для системных аналитиков · прогресс хранится только в вашем браузере</div></footer>
+
+<script>
+/* ============ DATA ============ */
+const LEVELS=[
+  {id:"j",name:"Junior",exp:"0–1 год",pct:20},
+  {id:"jp",name:"Junior+",exp:"1–2 года",pct:40},
+  {id:"m",name:"Middle",exp:"2–3 года",pct:60},
+  {id:"mp",name:"Middle+",exp:"3–5 лет",pct:80},
+  {id:"s",name:"Senior",exp:"5+ лет",pct:100}
+];
+const LV=Object.fromEntries(LEVELS.map((l,i)=>[l.id,{...l,i}]));
+const TOPICS={req:"Требования",model:"BPMN и UML",api:"API и протоколы",db:"БД и SQL",integ:"Интеграции",arch:"Архитектура",soft:"Процессы и коммуникации"};
+
+const QUESTIONS=[
+/* Junior */
+{l:"j",t:"req",q:"Что такое требования и какие виды требований ты знаешь?",
+ a:"<p>Требование — зафиксированное условие или возможность, которой должна обладать система, чтобы решить задачу бизнеса или пользователя.</p><p>Уровни по Вигерсу: <b>бизнес-требования</b> (зачем: цели, выгоды), <b>пользовательские</b> (что пользователь делает с системой), <b>функциональные</b> (что делает система). Отдельно — <b>нефункциональные</b> (как хорошо: производительность, надёжность, безопасность) и <b>ограничения</b> (стек, законы, сроки).</p>",
+ p:["Назвал уровни: бизнес, пользовательские, функциональные","Отличил функциональные от нефункциональных","Привёл пример НФТ с измеримой метрикой","Упомянул ограничения (законодательство, технологии)"],
+ f:"Приведи пример требования, которое ты бы вернул заказчику на доработку, и объясни почему."},
+{l:"j",t:"api",q:"Чем отличаются HTTP-методы GET, POST, PUT, PATCH и DELETE?",
+ a:"<p><b>GET</b> — получить ресурс, без побочных эффектов. <b>POST</b> — создать ресурс или выполнить действие, не идемпотентен. <b>PUT</b> — заменить ресурс целиком, идемпотентен. <b>PATCH</b> — частичное изменение. <b>DELETE</b> — удалить, идемпотентен.</p><p>Идемпотентность: повторный одинаковый запрос не меняет результат на сервере после первого.</p>",
+ p:["Описал назначение каждого метода","Объяснил идемпотентность","Различил PUT (целиком) и PATCH (частично)","Отметил, что GET не меняет состояние"]},
+{l:"j",t:"db",q:"Что такое первичный и внешний ключ?",
+ a:"<p><b>Первичный ключ</b> однозначно идентифицирует строку: уникален и не NULL. <b>Внешний ключ</b> — поле, ссылающееся на первичный ключ другой таблицы, обеспечивает ссылочную целостность.</p><p>Пример: <code>orders.client_id</code> → <code>clients.id</code>. Нельзя создать заказ для несуществующего клиента.</p>",
+ p:["Уникальность и NOT NULL у первичного ключа","Внешний ключ ссылается на другую таблицу","Упомянул ссылочную целостность","Привёл пример связи"]},
+{l:"j",t:"api",q:"Какие группы кодов ответа HTTP ты знаешь? Приведи примеры.",
+ a:"<p><b>2xx</b> успех: 200 OK, 201 Created, 204 No Content. <b>3xx</b> перенаправление: 301, 304. <b>4xx</b> ошибка клиента: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests. <b>5xx</b> ошибка сервера: 500, 502, 503, 504.</p>",
+ p:["Назвал все группы 2xx–5xx","Различил 401 и 403","Привёл 201 для создания","Знает 429 или 503 для перегрузки"]},
+{l:"j",t:"model",q:"Что такое диаграмма вариантов использования (use case) и из чего она состоит?",
+ a:"<p>UML-диаграмма, которая показывает, кто взаимодействует с системой и какие цели достигает. Элементы: <b>акторы</b>, <b>варианты использования</b>, граница системы, связи <code>include</code> и <code>extend</code>.</p><p>Каждый вариант раскрывается в текстовой спецификации: предусловия, основной сценарий, альтернативные сценарии, постусловия.</p>",
+ p:["Назвал акторов и варианты использования","Упомянул include и extend","Сказал про текстовую спецификацию сценария","Упомянул альтернативные потоки"]},
+{l:"j",t:"soft",q:"Заказчик пришёл с идеей. Как ты будешь выяснять требования?",
+ a:"<p>Сначала понять цель и проблему: зачем, что сейчас болит, как измерим успех. Определить стейкхолдеров. Выбрать техники: интервью, анализ документов и текущей системы, наблюдение, воркшоп.</p><p>Задавать открытые и уточняющие вопросы, фиксировать договорённости письменно, показать результат (схему, прототип) и согласовать.</p>",
+ p:["Начал с цели и проблемы бизнеса","Определил стейкхолдеров","Назвал 2+ техники выявления","Фиксация и согласование результата"]},
+{l:"j",t:"db",q:"Напиши SQL-запрос: клиенты, у которых больше трёх заказов.",
+ a:"<pre><code>SELECT c.id, c.name, COUNT(o.id) AS orders_cnt\nFROM clients c\nJOIN orders o ON o.client_id = c.id\nGROUP BY c.id, c.name\nHAVING COUNT(o.id) > 3;</code></pre><p>Ключевое: фильтр по агрегату пишется в <code>HAVING</code>, а не в <code>WHERE</code>.</p>",
+ p:["Использовал JOIN по внешнему ключу","Сгруппировал по клиенту","Фильтр по агрегату в HAVING","Объяснил разницу WHERE и HAVING"]},
+/* Junior+ */
+{l:"jp",t:"api",q:"Что такое REST? Какие принципы к нему относятся?",
+ a:"<p>Архитектурный стиль, где система — набор <b>ресурсов</b> с адресами (URI), а действия выражаются стандартными методами HTTP.</p><p>Ограничения: клиент-сервер, <b>stateless</b> (каждый запрос самодостаточен), кэшируемость, единообразный интерфейс, многоуровневость, код по требованию (опционально).</p>",
+ p:["Ресурсы и URI","Stateless","Единообразный интерфейс (методы HTTP)","Кэшируемость или многоуровневость"],
+ f:"Как бы ты назвал эндпоинт для блокировки карты клиента в REST-стиле?"},
+{l:"jp",t:"model",q:"Назови основные элементы нотации BPMN.",
+ a:"<p><b>События</b> (стартовое, промежуточное, конечное; таймер, сообщение, ошибка). <b>Задачи</b> и подпроцессы. <b>Шлюзы</b>: исключающий (XOR), параллельный (AND), неэксклюзивный (OR), событийный. <b>Пулы и дорожки</b> — участники и роли.</p><p>Связи: поток управления внутри пула, поток сообщений между пулами, ассоциации с данными.</p>",
+ p:["События трёх типов","Виды шлюзов XOR/AND/OR","Пулы и дорожки","Поток сообщений между пулами"]},
+{l:"jp",t:"db",q:"Какие виды JOIN бывают и чем они отличаются?",
+ a:"<p><b>INNER</b> — только совпавшие строки. <b>LEFT</b> — все строки левой таблицы, справа NULL при отсутствии пары. <b>RIGHT</b> — наоборот. <b>FULL</b> — все строки обеих. <b>CROSS</b> — декартово произведение.</p><p>Типичная задача: найти клиентов без заказов — <code>LEFT JOIN ... WHERE o.id IS NULL</code>.</p>",
+ p:["Назвал INNER, LEFT, RIGHT, FULL","Объяснил появление NULL","Упомянул CROSS JOIN","Пример с поиском отсутствующих записей"]},
+{l:"jp",t:"req",q:"Чем user story отличается от use case?",
+ a:"<p><b>User story</b> — короткое описание ценности: «Как &lt;роль&gt;, я хочу &lt;действие&gt;, чтобы &lt;ценность&gt;» + критерии приёмки. Проверяется по INVEST, детали уточняются в разговоре.</p><p><b>Use case</b> — подробный сценарий взаимодействия актора и системы: предусловия, основной и альтернативные потоки, постусловия. Лучше подходит для сложной логики.</p>",
+ p:["Формат user story","Критерии приёмки","Структура use case","Когда что выбирать"]},
+{l:"jp",t:"api",q:"Как ты опишешь REST-метод для разработчиков?",
+ a:"<p>В спецификации OpenAPI: путь и метод, назначение, авторизация, параметры пути и запроса, тело запроса со схемой и обязательностью полей, ответы с кодами и схемами, формат ошибок, примеры.</p><p>Плюс бизнес-правила: валидации, маппинг полей на БД или другую систему, ограничения нагрузки.</p>",
+ p:["Упомянул OpenAPI/Swagger","Параметры и тело со схемами","Коды ответов и формат ошибок","Валидации и маппинг"]},
+{l:"jp",t:"model",q:"Из чего состоит диаграмма последовательности?",
+ a:"<p>Участники с <b>линиями жизни</b>, сообщения между ними: синхронные (сплошная стрелка с закрашенным наконечником), асинхронные (открытый наконечник), ответы (пунктир). Активации показывают время выполнения.</p><p>Комбинированные фрагменты: <code>alt</code> (ветвление), <code>opt</code> (необязательно), <code>loop</code> (цикл), <code>par</code> (параллельно).</p>",
+ p:["Участники и линии жизни","Синхронные и асинхронные сообщения","Фрагменты alt/opt/loop","Ответные сообщения"]},
+/* Middle */
+{l:"m",t:"integ",q:"Когда выбирать синхронную интеграцию, а когда асинхронную?",
+ a:"<p><b>Синхронно</b> (REST, gRPC): когда нужен немедленный ответ пользователю, простая логика, малое время обработки. Минус — сильная связанность по доступности: упал сервис — упал вызов.</p><p><b>Асинхронно</b> (Kafka, RabbitMQ): долгие операции, рассылка событий нескольким потребителям, сглаживание пиков, независимость систем. Цена — eventual consistency, сложнее отладка и сценарии ошибок.</p>",
+ p:["Критерий: нужен ли немедленный ответ","Связанность по доступности","Сглаживание пиков нагрузки","Eventual consistency как цена"],
+ f:"Перевод между своими счетами: синхронно или асинхронно? Обоснуй."},
+{l:"m",t:"integ",q:"Чем Kafka отличается от RabbitMQ?",
+ a:"<p><b>Kafka</b> — распределённый журнал: сообщения хранятся заданное время и не удаляются после чтения, читатели двигают offset, масштабирование через партиции и consumer groups, порядок гарантирован внутри партиции.</p><p><b>RabbitMQ</b> — брокер очередей: гибкая маршрутизация через exchange, сообщение удаляется после подтверждения (ack), удобен для задач и команд.</p>",
+ p:["Kafka как журнал с хранением","Партиции и consumer groups","Порядок внутри партиции","Маршрутизация и ack в RabbitMQ"]},
+{l:"m",t:"db",q:"Что такое нормализация и когда оправдана денормализация?",
+ a:"<p>Нормализация убирает избыточность и аномалии обновления. 1НФ — атомарные значения; 2НФ — нет зависимости от части составного ключа; 3НФ — нет транзитивных зависимостей неключевых атрибутов.</p><p>Денормализуют ради скорости чтения: отчёты, витрины, кэш-таблицы, хранение снимка данных на момент операции (цена в заказе).</p>",
+ p:["Цель нормализации","1НФ, 2НФ, 3НФ","Пример денормализации","Снимок данных на момент операции"]},
+{l:"m",t:"db",q:"Что такое транзакция, ACID и уровни изоляции?",
+ a:"<p><b>ACID</b>: атомарность, согласованность, изолированность, долговечность.</p><p>Уровни изоляции: Read Uncommitted (грязное чтение), Read Committed (нет грязного, есть неповторяемое), Repeatable Read (нет неповторяемого, возможны фантомы), Serializable (полная изоляция, ниже производительность). В PostgreSQL по умолчанию Read Committed.</p>",
+ p:["Расшифровал ACID","Назвал 4 уровня изоляции","Связал уровни с аномалиями","Компромисс изоляции и производительности"]},
+{l:"m",t:"api",q:"Как сделать создание платежа идемпотентным?",
+ a:"<p>Клиент генерирует <b>ключ идемпотентности</b> (UUID) и передаёт в заголовке <code>Idempotency-Key</code>. Сервер сохраняет ключ с результатом. Повтор с тем же ключом возвращает сохранённый ответ, а не создаёт второй платёж.</p><p>Детали: уникальный индекс на ключ, срок хранения, проверка совпадения тела, обработка параллельного повтора (409 или ожидание).</p>",
+ p:["Ключ идемпотентности от клиента","Сохранение результата на сервере","Уникальный индекс или блокировка","Поведение при параллельных запросах"]},
+{l:"m",t:"arch",q:"Монолит или микросервисы: плюсы и минусы?",
+ a:"<p><b>Монолит</b>: проще разработка, отладка и транзакции, одна поставка. Минусы: сложно масштабировать части, долгий релиз, связность кода.</p><p><b>Микросервисы</b>: независимые релизы и масштабирование, разные технологии, изоляция отказов. Минусы: распределённые транзакции, сеть, наблюдаемость, инфраструктура, сложность согласования контрактов.</p>",
+ p:["Плюсы монолита","Независимые релизы и масштабирование","Распределённые транзакции как минус","Требования к инфраструктуре и наблюдаемости"]},
+{l:"m",t:"req",q:"Как ты работаешь с нефункциональными требованиями?",
+ a:"<p>Выявляю по чек-листу (ISO 25010): производительность, доступность, надёжность, безопасность, масштабируемость, сопровождаемость, удобство.</p><p>Формулирую измеримо: «p95 времени ответа ≤ 300 мс при 500 RPS», «доступность 99,9% в месяц», «RPO 15 минут». Согласую с архитектором и эксплуатацией, проверяю нагрузочным тестом.</p>",
+ p:["Категории НФТ или ISO 25010","Измеримые метрики (p95, RPS, %)","Доступность, RPO/RTO","Как проверить выполнение"]},
+/* Middle+ */
+{l:"mp",t:"integ",q:"Как гарантировать доставку сообщений между сервисами?",
+ a:"<p>Семантики: at-most-once, <b>at-least-once</b>, exactly-once. На практике — at-least-once + <b>идемпотентный консьюмер</b> (хранит обработанные ID).</p><p>Отправка: <b>Transactional Outbox</b> — событие пишется в таблицу outbox в той же транзакции, отдельный процесс публикует в брокер. Обработка: ретраи с экспоненциальной задержкой, <b>DLQ</b> для «ядовитых» сообщений, мониторинг лага.</p>",
+ p:["Три семантики доставки","Идемпотентный консьюмер","Transactional Outbox","Ретраи с backoff и DLQ"],
+ f:"Что произойдёт, если сервис упадёт после записи в БД, но до отправки в Kafka без outbox?"},
+{l:"mp",t:"arch",q:"Как провести бизнес-операцию через несколько сервисов без общей транзакции?",
+ a:"<p>Паттерн <b>Saga</b>: цепочка локальных транзакций, для каждой шага есть <b>компенсирующее</b> действие. Хореография — сервисы реагируют на события друг друга; оркестрация — центральный координатор управляет шагами.</p><p>2PC обычно избегают: блокировки, зависимость от координатора, плохо масштабируется. Важно продумать промежуточные статусы и видимость их пользователю.</p>",
+ p:["Saga и компенсации","Хореография и оркестрация","Почему не 2PC","Промежуточные статусы"]},
+{l:"mp",t:"api",q:"Как версионировать API и сохранять обратную совместимость?",
+ a:"<p>Способы: версия в URI (<code>/v2/</code>), в заголовке, в media type. Неломающие изменения: новые необязательные поля и новые эндпоинты. Ломающие: удаление или переименование полей, смена типа, новые обязательные поля, изменение смысла.</p><p>Процесс: политика deprecation со сроками, заголовок <code>Sunset</code>, мониторинг потребителей старой версии, контрактные тесты.</p>",
+ p:["Способы указания версии","Что ломает совместимость","Политика deprecation","Контрактные тесты или мониторинг потребителей"]},
+{l:"mp",t:"arch",q:"Как спроектировать кэширование для справочника тарифов?",
+ a:"<p>Паттерн <b>cache-aside</b>: читаем из кэша, при промахе — из БД и кладём в кэш с TTL. Инвалидация при изменении тарифа: удаление ключа или событие об изменении.</p><p>Вопросы: допустимая устарелость данных, прогрев, защита от одновременного промаха (cache stampede), размер, что делать при недоступности кэша.</p>",
+ p:["Cache-aside","TTL и инвалидация","Допустимая устарелость","Cache stampede или отказ кэша"]},
+{l:"mp",t:"soft",q:"Как ты оцениваешь свою работу и управляешь изменением требований?",
+ a:"<p>Оценка: декомпозиция на артефакты (схемы, API, ТЗ), сравнение с прошлыми задачами, буфер на неопределённость, совместная оценка с командой.</p><p>Изменения: фиксирую запрос, делаю <b>impact-анализ</b> по трассируемости (что затронуто: API, тесты, другие команды), оцениваю, согласую с владельцем продукта, обновляю документацию и историю изменений.</p>",
+ p:["Декомпозиция для оценки","Буфер на неопределённость","Impact-анализ","Согласование и фиксация изменения"]},
+{l:"mp",t:"db",q:"Как работают индексы и когда они не помогают?",
+ a:"<p>Чаще всего B-tree: быстрый поиск по равенству и диапазону. Составной индекс работает по левому префиксу: <code>(a, b)</code> поможет для <code>a</code> и <code>a+b</code>, но не для одного <code>b</code>.</p><p>Не помогает: функция над колонкой, низкая селективность, <code>LIKE '%x'</code>, маленькая таблица. Цена индекса — замедление записи и место. Проверка через <code>EXPLAIN ANALYZE</code>.</p>",
+ p:["B-tree для равенства и диапазона","Левый префикс составного индекса","Случаи, когда индекс не используется","EXPLAIN и цена индекса"]},
+/* Senior */
+{l:"s",t:"arch",q:"Спроектируй систему уведомлений банка (push, SMS, email) для 10 млн клиентов.",
+ a:"<p>Начать с требований: типы уведомлений (транзакционные, маркетинговые), SLA доставки, пиковая нагрузка, согласия клиента.</p><p>Решение: API приёма → очередь с приоритетами (транзакционные отдельно) → сервис шаблонов и настроек клиента → отправщики по каналам с rate limit провайдеров → фолбэк канала (push не доставлен → SMS) → хранилище статусов. Дедупликация по ключу события, ретраи, DLQ, аудит, мониторинг доставки и стоимости SMS.</p>",
+ p:["Уточнил требования и нагрузку","Очереди и приоритизация","Фолбэк каналов и rate limits","Дедупликация, статусы, аудит","Наблюдаемость и стоимость"],
+ f:"Как обеспечить, что клиент не получит два SMS об одной операции?"},
+{l:"s",t:"arch",q:"Объясни CAP-теорему. Как она влияет на выбор хранилища?",
+ a:"<p>При сетевом разделении (P) распределённая система выбирает между согласованностью (C) и доступностью (A). Без разделения можно обеспечить оба.</p><p>Для балансов и платежей выбираем согласованность (CP, реляционные БД с репликацией). Для ленты событий, каталога, счётчиков допустима доступность с eventual consistency (AP). Также стоит упомянуть PACELC: компромисс задержки и согласованности в нормальном режиме.</p>",
+ p:["Корректная формулировка CAP","Выбор C или A при разделении","Пример для финансовых данных","PACELC или задержки"]},
+{l:"s",t:"soft",q:"Как ты выстроишь процесс аналитики в нескольких командах?",
+ a:"<p>Общие стандарты: шаблоны артефактов, нотации, требования к спецификации API. Критерии Definition of Ready и Definition of Done для аналитики. Ревью артефактов коллегами, единая база знаний с поиском.</p><p>Развитие людей: матрица компетенций, менторинг, внутренние разборы. Метрики: возвраты задач из разработки, дефекты из-за требований, время подготовки задачи.</p>",
+ p:["Стандарты и шаблоны","DoR и DoD","Ревью и база знаний","Развитие команды","Метрики качества аналитики"]},
+{l:"s",t:"arch",q:"Как мигрировать с монолита на микросервисы?",
+ a:"<p>Сначала понять зачем: какие проблемы решаем. Выделить границы через <b>DDD</b> (bounded contexts, event storming). Паттерн <b>Strangler Fig</b>: прокси перед монолитом, функции переносятся по одной.</p><p><b>Anti-corruption layer</b> между старой и новой моделью. Данные: отдельная БД на сервис, синхронизация через CDC или события на переходный период. Начинать с наименее связанного домена, заранее построить мониторинг и CI/CD.</p>",
+ p:["Цель миграции","DDD и bounded contexts","Strangler Fig","Миграция данных","Порядок и инфраструктура"]},
+{l:"s",t:"req",q:"Два стейкхолдера требуют противоположного. Что будешь делать?",
+ a:"<p>Понять интересы за позициями: какую проблему каждый решает. Привести к общей цели продукта и данным: ценность, стоимость, риски.</p><p>Поискать решение, закрывающее оба интереса. Если нет — приоритизация по прозрачной модели (WSJF, MoSCoW) с владельцем продукта, при необходимости эскалация. Решение фиксируется с обоснованием (ADR или протокол) и доводится до всех.</p>",
+ p:["Интересы за позициями","Опора на данные и цели","Модель приоритизации","Эскалация и фиксация решения"]},
+{l:"s",t:"integ",q:"Когда оправданы event sourcing и CQRS?",
+ a:"<p><b>CQRS</b> — разделение модели записи и чтения: когда чтения сильно больше записей или нужны разные представления. <b>Event sourcing</b> — состояние хранится как последовательность событий: нужен полный аудит, восстановление состояния на любой момент, сложная доменная логика.</p><p>Цена: сложность, eventual consistency read-моделей, версионирование событий, снапшоты. Для типового CRUD не оправдано.</p>",
+ p:["Суть CQRS","Суть event sourcing","Когда оправдано","Цена и риски"]}
+];
+
+const LESSONS={
+req:{title:"Требования: уровни, виды и качество",min:12,
+ body:`<p>Системный аналитик переводит потребности бизнеса в описание, по которому команда может построить и проверить систему. Начинается всё с понимания уровней требований.</p>
+<h3>Уровни требований</h3>
+<dl class="defs"><dt>Бизнес-требования</dt><dd>Зачем делаем: цель и измеримый эффект. «Сократить время выдачи кредитной карты с 3 дней до 1 часа».</dd>
+<dt>Пользовательские</dt><dd>Что пользователь делает с системой. User story, use case.</dd>
+<dt>Функциональные</dt><dd>Что делает система. «Система проверяет кредитную историю через бюро».</dd>
+<dt>Нефункциональные</dt><dd>Насколько хорошо: скорость, доступность, безопасность.</dd>
+<dt>Ограничения</dt><dd>152-ФЗ, обязательный стек, сроки, бюджет.</dd></dl>
+<h3>Качество требования</h3>
+<ul><li><b>Однозначность</b>: без слов «быстро», «удобно», «и т.д.».</li><li><b>Проверяемость</b>: тестировщик может написать тест.</li><li><b>Полнота</b>: описаны ошибки и альтернативные сценарии.</li><li><b>Трассируемость</b>: связь с источником, с кодом и тестами.</li><li><b>Атомарность</b>: одно требование — одна мысль.</li></ul>
+<p>Плохо: «Поиск клиента должен работать быстро». Хорошо:</p>
+<pre><code>95% запросов поиска клиента по номеру телефона
+выполняются не дольше 300 мс при нагрузке 200 RPS.</code></pre>
+<h3>User story и критерии приёмки</h3>
+<pre><code>Как клиент банка, я хочу заблокировать карту в приложении,
+чтобы мошенник не смог ею воспользоваться.
+
+Критерий приёмки:
+  Given карта в статусе ACTIVE
+  When клиент нажимает «Заблокировать» и подтверждает
+  Then статус карты меняется на BLOCKED
+   And операции по карте отклоняются
+   And клиент получает push-уведомление</code></pre>
+<h3>Техники выявления</h3>
+<ul><li>Интервью: заранее готовьте вопросы, фиксируйте ответы, отправляйте резюме.</li><li>Анализ документов и текущей системы: регламенты, логи, БД.</li><li>Наблюдение за работой пользователя.</li><li>Воркшопы и event storming для сложных доменов.</li><li>Прототипы: быстрая проверка понимания.</li></ul>`,
+ take:["Отделяйте «зачем» (бизнес) от «что» (функции) и «как хорошо» (НФТ)","Каждое требование должно быть проверяемым","Критерии приёмки пишите в формате Given/When/Then"]},
+model:{title:"BPMN и UML: моделирование процессов и систем",min:15,
+ body:`<p>Модели помогают договориться быстрее текста. BPMN описывает бизнес-процесс, UML — устройство и поведение системы.</p>
+<h3>BPMN: базовые элементы</h3>
+<dl class="defs"><dt>События</dt><dd>Тонкий круг — старт, двойной — промежуточное, жирный — конец. Типы: сообщение, таймер, ошибка.</dd>
+<dt>Задачи</dt><dd>Прямоугольник со скруглением: пользовательская, сервисная, ручная задача, подпроцесс.</dd>
+<dt>Шлюзы</dt><dd>Ромб. XOR — одна ветка по условию, AND — все ветки параллельно, OR — одна или несколько.</dd>
+<dt>Пулы и дорожки</dt><dd>Пул — участник (банк, клиент), дорожка — роль внутри (операционист, скоринг).</dd>
+<dt>Потоки</dt><dd>Сплошная стрелка — порядок внутри пула. Пунктир с кружком — сообщения между пулами.</dd></dl>
+<p>Частая ошибка: параллельный шлюз открыли, а закрыли исключающим. Процесс пойдёт дальше дважды.</p>
+<h3>UML: какие диаграммы нужны аналитику</h3>
+<ul><li><b>Use case</b> — кто и зачем пользуется системой.</li><li><b>Sequence</b> — порядок вызовов между системами. Главная диаграмма для интеграций.</li><li><b>Activity</b> — алгоритм или поток действий.</li><li><b>State machine</b> — жизненный цикл сущности: заявки, платежа, карты.</li><li><b>Class / ER</b> — модель данных.</li></ul>
+<h3>Пример sequence в PlantUML</h3>
+<pre><code>@startuml
+actor Клиент
+participant "Мобильный банк" as MB
+participant "Сервис карт" as CS
+queue Kafka
+Клиент -> MB: Заблокировать карту
+MB -> CS: POST /cards/{id}/block
+alt карта активна
+  CS -> CS: статус BLOCKED
+  CS --> MB: 200 OK
+  CS ->> Kafka: CardBlocked
+else карта уже заблокирована
+  CS --> MB: 409 Conflict
+end
+@enduml</code></pre>
+<h3>Модель C4</h3>
+<p>Четыре уровня детализации архитектуры: Context (система и окружение), Container (приложения и БД), Component (модули внутри), Code. Выбирайте уровень под аудиторию: бизнесу — Context, разработке — Container и Component.</p>`,
+ take:["Шлюз, открывший параллельные ветки, должен их и закрыть","Sequence — основной инструмент описания интеграций","Статусы сущности описывайте state machine, а не текстом"]},
+api:{title:"API: REST, HTTP и спецификации",min:14,
+ body:`<p>Аналитик проектирует контракт: что система принимает и возвращает. От качества контракта зависит, сколько вопросов придёт от разработки.</p>
+<h3>HTTP-методы</h3>
+<dl class="defs"><dt>GET</dt><dd>Чтение. Безопасный и идемпотентный.</dd><dt>POST</dt><dd>Создание или действие. Не идемпотентен.</dd><dt>PUT</dt><dd>Полная замена. Идемпотентен.</dd><dt>PATCH</dt><dd>Частичное изменение.</dd><dt>DELETE</dt><dd>Удаление. Идемпотентен.</dd></dl>
+<h3>Проектирование ресурсов</h3>
+<ul><li>Существительные во множественном числе: <code>/clients/{id}/accounts</code>.</li><li>Действия, не укладывающиеся в CRUD, оформляйте подресурсом: <code>POST /cards/{id}/block</code>.</li><li>Фильтры и пагинация в query: <code>?status=ACTIVE&amp;limit=50&amp;cursor=…</code>. Для больших объёмов — курсорная пагинация.</li><li>Единый формат ошибок для всех методов.</li></ul>
+<h3>Фрагмент OpenAPI</h3>
+<pre><code>paths:
+  /cards/{cardId}/block:
+    post:
+      summary: Заблокировать карту
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, enum: [LOST, STOLEN, FRAUD] }
+      responses:
+        '200': { description: Карта заблокирована }
+        '404': { description: Карта не найдена }
+        '409': { description: Карта уже заблокирована }</code></pre>
+<h3>Формат ошибки</h3>
+<pre><code>{
+  "code": "CARD_ALREADY_BLOCKED",
+  "message": "Карта уже заблокирована",
+  "traceId": "a1b2c3d4"
+}</code></pre>
+<h3>Безопасность</h3>
+<p>Аутентификация через OAuth 2.0 и JWT: токен в заголовке <code>Authorization: Bearer</code>. 401 — нет или неверный токен, 403 — токен есть, но прав нет. Не передавайте персональные данные в URL: они попадают в логи.</p>`,
+ take:["Контракт = путь, метод, параметры, схемы, коды ответов, ошибки, примеры","Для денежных операций требуйте ключ идемпотентности","Персональные данные не должны попадать в URL"]},
+db:{title:"Базы данных и SQL для аналитика",min:15,
+ body:`<p>Аналитик пишет запросы, чтобы проверить гипотезы на данных, и проектирует модель данных для новых функций.</p>
+<h3>Порядок выполнения SELECT</h3>
+<pre><code>FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</code></pre>
+<p>Поэтому алиас из SELECT нельзя использовать в WHERE, а фильтр по агрегату пишется в HAVING.</p>
+<h3>Типовые запросы</h3>
+<pre><code>-- Клиенты без операций за последние 90 дней
+SELECT c.id, c.full_name
+FROM clients c
+LEFT JOIN operations o
+  ON o.client_id = c.id
+ AND o.created_at >= now() - interval '90 days'
+WHERE o.id IS NULL;
+
+-- Топ-3 операции по сумме для каждого клиента
+SELECT *
+FROM (
+  SELECT o.*, ROW_NUMBER() OVER (
+    PARTITION BY client_id ORDER BY amount DESC) AS rn
+  FROM operations o
+) t
+WHERE rn &lt;= 3;</code></pre>
+<h3>Нормализация</h3>
+<ul><li><b>1НФ</b>: атомарные значения, нет списков в ячейке.</li><li><b>2НФ</b>: атрибуты зависят от всего составного ключа.</li><li><b>3НФ</b>: нет зависимостей неключевых атрибутов друг от друга.</li></ul>
+<p>Осознанная денормализация: сохраняйте сумму и курс в операции на момент проведения, а не ссылку на текущий курс.</p>
+<h3>Транзакции и изоляция</h3>
+<dl class="defs"><dt>Read Uncommitted</dt><dd>Возможно грязное чтение.</dd><dt>Read Committed</dt><dd>Видны только зафиксированные данные. По умолчанию в PostgreSQL.</dd><dt>Repeatable Read</dt><dd>Повторное чтение строки даёт тот же результат.</dd><dt>Serializable</dt><dd>Как будто транзакции шли по очереди.</dd></dl>
+<h3>Индексы</h3>
+<p>Индекс ускоряет чтение и замедляет запись. Составной индекс <code>(client_id, created_at)</code> подходит для «операции клиента за период». Проверяйте план запроса через <code>EXPLAIN ANALYZE</code>.</p>`,
+ take:["WHERE фильтрует строки, HAVING — группы","LEFT JOIN + IS NULL находит отсутствующие связи","Оконные функции решают задачи «топ-N в группе»"]},
+integ:{title:"Интеграции и брокеры сообщений",min:16,
+ body:`<p>Большая часть работы аналитика в крупных компаниях связана с обменом данными между системами.</p>
+<h3>Синхронно или асинхронно</h3>
+<dl class="defs"><dt>Синхронно</dt><dd>REST, gRPC, SOAP. Нужен немедленный ответ: проверка баланса, авторизация. Отказ сервиса сразу виден вызывающему.</dd>
+<dt>Асинхронно</dt><dd>Kafka, RabbitMQ. Долгие операции, рассылка событий, сглаживание пиков. Данные согласуются не сразу.</dd></dl>
+<h3>Kafka: основные понятия</h3>
+<ul><li><b>Топик</b> — именованный поток событий. <b>Партиция</b> — часть топика, порядок гарантирован внутри неё.</li><li><b>Ключ сообщения</b> определяет партицию. Используйте ID сущности, чтобы события одного счёта шли по порядку.</li><li><b>Offset</b> — позиция чтения. <b>Consumer group</b> делит партиции между экземплярами потребителя.</li><li>Сообщения хранятся заданное время, их можно перечитать.</li></ul>
+<h3>Гарантии доставки</h3>
+<p>Надёжный стандарт: at-least-once плюс идемпотентный обработчик. Сообщение может прийти дважды, потребитель должен это пережить.</p>
+<pre><code>Transactional Outbox
+
+BEGIN;
+  INSERT INTO payments (...);
+  INSERT INTO outbox (event_type, payload) VALUES ('PaymentCreated', ...);
+COMMIT;
+
+-- отдельный процесс читает outbox и публикует в Kafka,
+-- после успешной отправки помечает запись отправленной</code></pre>
+<h3>Обработка ошибок</h3>
+<ul><li>Ретраи с экспоненциальной задержкой для временных ошибок.</li><li>DLQ для сообщений, которые не обработались после N попыток.</li><li>Circuit breaker для синхронных вызовов к нестабильному сервису.</li><li>Таймауты на каждый вызов. Без таймаута один медленный сервис подвешивает цепочку.</li></ul>
+<h3>Что описать в спецификации интеграции</h3>
+<ul><li>Участники, направление и триггер обмена.</li><li>Формат и схема сообщения, пример.</li><li>Маппинг полей между системами.</li><li>Нагрузка, SLA, таймауты, ретраи.</li><li>Сценарии ошибок и компенсации.</li></ul>`,
+ take:["Порядок в Kafka гарантирован только внутри партиции","At-least-once требует идемпотентного потребителя","Outbox решает проблему «записали в БД, но не отправили событие»"]},
+arch:{title:"Архитектура систем и system design",min:18,
+ body:`<p>От Middle+ ждут, что аналитик понимает архитектурные решения и может спроектировать систему на интервью.</p>
+<h3>Как отвечать на system design</h3>
+<ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:68ch"><li>Уточнить функциональные требования и границы задачи.</li><li>Оценить нагрузку: пользователи, RPS, объём данных, пики.</li><li>Нарисовать высокоуровневую схему: клиенты, шлюз, сервисы, хранилища, брокер.</li><li>Детализировать ключевые сценарии и модель данных.</li><li>Разобрать отказы, масштабирование, безопасность, мониторинг.</li></ol>
+<h3>Ключевые паттерны</h3>
+<dl class="defs"><dt>API Gateway</dt><dd>Единая точка входа: маршрутизация, аутентификация, лимиты.</dd>
+<dt>Cache-aside</dt><dd>Чтение из кэша, при промахе из БД с записью в кэш.</dd>
+<dt>Saga</dt><dd>Распределённая операция как цепочка локальных транзакций с компенсациями.</dd>
+<dt>CQRS</dt><dd>Отдельные модели для записи и чтения.</dd>
+<dt>Circuit breaker</dt><dd>Временно прекращает вызовы к сбоящему сервису.</dd>
+<dt>Strangler Fig</dt><dd>Постепенная замена монолита новыми сервисами.</dd></dl>
+<h3>CAP</h3>
+<p>При сетевом разделении нужно выбрать: согласованность или доступность. Деньги и балансы — согласованность. Лента новостей, рекомендации — доступность.</p>
+<h3>Оценка нагрузки на примере</h3>
+<pre><code>10 млн клиентов, 20% активны в день  → 2 млн DAU
+по 5 запросов истории операций        → 10 млн запросов/сутки
+среднее: 10 000 000 / 86 400          ≈ 116 RPS
+пик ×5–10                             ≈ 600–1200 RPS</code></pre>
+<h3>Наблюдаемость</h3>
+<p>Логи, метрики, трейсы. Сквозной traceId передаётся через все вызовы и сообщения, чтобы найти путь конкретного запроса.</p>
+<h3>ADR</h3>
+<p>Architecture Decision Record фиксирует решение: контекст, варианты, выбор, последствия. Через год команда поймёт, почему сделано именно так.</p>`,
+ take:["Начинайте system design с требований и оценки нагрузки","Для каждого компонента спросите себя: что будет, если он упадёт","Фиксируйте важные решения в ADR"]},
+soft:{title:"Процесс, коммуникации и само интервью",min:10,
+ body:`<p>Технические знания проверяют на половине интервью. Вторая половина — как вы работаете с людьми и задачами.</p>
+<h3>Место аналитика в процессе</h3>
+<ul><li><b>Definition of Ready</b>: задача готова к разработке — есть описание, контракты, макеты, критерии приёмки, понятны зависимости.</li><li><b>Definition of Done</b>: задача завершена — код, тесты, документация, приёмка.</li><li>Аналитик участвует в груминге, планировании, демо и помогает QA с тест-кейсами.</li></ul>
+<h3>Приоритизация</h3>
+<dl class="defs"><dt>MoSCoW</dt><dd>Must, Should, Could, Won't.</dd><dt>WSJF</dt><dd>(Ценность + срочность + снижение риска) / трудоёмкость.</dd><dt>RICE</dt><dd>Reach × Impact × Confidence / Effort.</dd></dl>
+<h3>Поведенческие вопросы: метод STAR</h3>
+<pre><code>Situation — контекст: проект, команда, проблема
+Task      — ваша задача и ответственность
+Action    — что конкретно сделали вы (не «мы»)
+Result    — измеримый результат и вывод</code></pre>
+<p>Подготовьте 4–5 историй: сложный стейкхолдер, ошибка в требованиях, срочное изменение, конфликт с разработкой, задача, которой гордитесь.</p>
+<h3>Частые вопросы</h3>
+<ul><li>Расскажите о последнем проекте и своей роли.</li><li>Как вы поступите, если разработчик говорит, что требование невозможно реализовать?</li><li>Как понять, что требования готовы к передаче в разработку?</li><li>Что вы делаете, если стейкхолдер недоступен, а сроки горят?</li></ul>
+<h3>Вопросы работодателю</h3>
+<ul><li>Какие артефакты готовит аналитик и в каких инструментах?</li><li>Сколько аналитиков в команде, есть ли ревью и менторинг?</li><li>Как выглядит путь задачи от идеи до релиза?</li></ul>`,
+ take:["Отвечайте по STAR и говорите «я», а не «мы»","Знайте свои DoR и DoD","Задавайте вопросы о процессе: это тоже оценка компании"]}
+};
+
+const TESTS={
+req:[
+ {q:"Что относится к нефункциональным требованиям?",o:["Система формирует выписку в PDF","Время ответа API не более 500 мс для 95% запросов","Клиент может изменить номер телефона","Менеджер утверждает заявку"],c:1,e:"НФТ описывают качество работы системы. Остальные варианты описывают функции."},
+ {q:"Какой признак выдаёт плохое требование?",o:["Есть ссылка на источник","Есть критерии приёмки","Формулировки «удобный», «быстрый» без метрик","Требование атомарно"],c:2,e:"Неизмеримые формулировки нельзя проверить, каждый поймёт их по-своему."},
+ {q:"В каком формате обычно пишут критерии приёмки в BDD?",o:["Given / When / Then","Actor / Goal / Result","Input / Process / Output","Must / Should / Could"],c:0,e:"Given — исходное состояние, When — действие, Then — ожидаемый результат."},
+ {q:"Что означает буква I в критериях INVEST для user story?",o:["Important","Independent","Iterative","Implemented"],c:1,e:"История должна быть независимой от других, чтобы её можно было планировать отдельно."},
+ {q:"Трассируемость требований — это:",o:["Логирование действий пользователя","Связь требования с источником, реализацией и тестами","Версионирование документа","Отслеживание сроков задачи"],c:1,e:"Трассируемость позволяет понять, откуда пришло требование и что затронет его изменение."}],
+model:[
+ {q:"Какой шлюз BPMN запускает все исходящие ветки одновременно?",o:["Исключающий (XOR)","Неэксклюзивный (OR)","Параллельный (AND)","Событийный"],c:2,e:"Параллельный шлюз запускает все ветки и при слиянии ждёт их все."},
+ {q:"Поток сообщений в BPMN соединяет:",o:["Задачи внутри одной дорожки","Элементы разных пулов","Шлюзы между собой","Данные и задачи"],c:1,e:"Внутри пула используется поток управления, между пулами — поток сообщений."},
+ {q:"Для чего фрагмент alt на диаграмме последовательности?",o:["Цикл","Альтернативные ветки по условию","Параллельное выполнение","Необязательный шаг"],c:1,e:"alt — ветвление, opt — необязательный шаг, loop — цикл, par — параллельно."},
+ {q:"Какая диаграмма лучше всего покажет жизненный цикл заявки со статусами?",o:["Use case","Диаграмма классов","State machine","Диаграмма развёртывания"],c:2,e:"Диаграмма состояний показывает статусы и допустимые переходы между ними."},
+ {q:"Уровни модели C4:",o:["Context, Container, Component, Code","Client, Core, Cache, Cloud","Concept, Contract, Control, Commit","Case, Class, Component, Code"],c:0,e:"От общего контекста системы до деталей кода."}],
+api:[
+ {q:"Какой из методов идемпотентен?",o:["POST","PUT","CONNECT","Ни один"],c:1,e:"PUT заменяет ресурс целиком: повтор даёт то же состояние. POST не идемпотентен."},
+ {q:"Какой код ответа вернуть при успешном создании ресурса?",o:["200 OK","201 Created","202 Accepted","204 No Content"],c:1,e:"201 с заголовком Location или телом созданного ресурса."},
+ {q:"Чем 401 отличается от 403?",o:["Ничем","401 — нет прав, 403 — не аутентифицирован","401 — не аутентифицирован, 403 — нет прав","403 — ошибка сервера"],c:2,e:"401: кто вы — неизвестно. 403: известно, но доступа нет."},
+ {q:"OpenAPI — это:",o:["Протокол обмена","Спецификация для описания REST API","Брокер сообщений","Библиотека авторизации"],c:1,e:"По OpenAPI-описанию генерируют документацию, клиентов и тесты."},
+ {q:"Какая пагинация устойчива к вставкам новых записей на больших объёмах?",o:["Offset/limit","Курсорная (keyset)","Постраничная по номеру","Без пагинации"],c:1,e:"Курсор указывает на последнюю запись, сдвигов при вставке нет, и база не сканирует пропущенные строки."}],
+db:[
+ {q:"Чем HAVING отличается от WHERE?",o:["Ничем","HAVING фильтрует группы после GROUP BY","HAVING работает только с JOIN","WHERE выполняется после SELECT"],c:1,e:"WHERE фильтрует строки до группировки, HAVING — результат агрегации."},
+ {q:"LEFT JOIN вернёт:",o:["Только совпадающие строки","Все строки левой таблицы, NULL для несовпавших справа","Все строки обеих таблиц","Декартово произведение"],c:1,e:"Это основа запросов «найти записи без связей»."},
+ {q:"Какая аномалия исключена на уровне Read Committed?",o:["Фантомное чтение","Неповторяемое чтение","Грязное чтение","Никакая"],c:2,e:"Read Committed видит только зафиксированные данные."},
+ {q:"Составной индекс (a, b) ускорит запрос:",o:["WHERE b = ?","WHERE a = ? AND b = ?","WHERE a + b = ?","WHERE LOWER(a) = ?"],c:1,e:"Индекс работает по левому префиксу и без функций над колонками."},
+ {q:"Что требует третья нормальная форма?",o:["Атомарность значений","Отсутствие транзитивных зависимостей неключевых атрибутов","Наличие внешних ключей","Хранение истории"],c:1,e:"Неключевые атрибуты зависят только от ключа, а не друг от друга."}],
+integ:[
+ {q:"Где Kafka гарантирует порядок сообщений?",o:["Во всём кластере","Внутри топика","Внутри партиции","Нигде"],c:2,e:"Поэтому события одной сущности отправляют с одинаковым ключом."},
+ {q:"Какую проблему решает Transactional Outbox?",o:["Шифрование сообщений","Атомарность записи в БД и публикации события","Балансировку нагрузки","Сжатие данных"],c:1,e:"Событие пишется в БД в той же транзакции, а публикуется отдельным процессом."},
+ {q:"DLQ — это:",o:["Очередь с приоритетом","Очередь для сообщений, не обработанных после ретраев","Резервная копия топика","Лог аудита"],c:1,e:"Dead Letter Queue изолирует проблемные сообщения для разбора."},
+ {q:"Что означает at-least-once?",o:["Сообщение точно придёт один раз","Сообщение может потеряться","Сообщение может прийти повторно, нужен идемпотентный обработчик","Сообщение приходит всем потребителям"],c:2,e:"Повторы — нормальный сценарий, обработчик должен их отсеивать."},
+ {q:"Когда предпочтителен синхронный вызов?",o:["Рассылка события десяти системам","Пользователю нужен немедленный ответ, например баланс","Пакетная загрузка за ночь","Сглаживание пиков нагрузки"],c:1,e:"Остальные сценарии лучше решаются асинхронно."}],
+arch:[
+ {q:"Что утверждает теорема CAP?",o:["Нельзя масштабировать БД","При сетевом разделении нужно выбирать между согласованностью и доступностью","Кэш всегда согласован","Микросервисы всегда доступнее монолита"],c:1,e:"Без разделения сети можно обеспечить и C, и A."},
+ {q:"Saga — это:",o:["Двухфазный коммит","Цепочка локальных транзакций с компенсирующими действиями","Шаблон кэширования","Тип балансировщика"],c:1,e:"Если шаг падает, выполняются компенсации предыдущих шагов."},
+ {q:"Как работает cache-aside?",o:["БД сама пишет в кэш","Приложение читает кэш, при промахе — БД, и кладёт данные в кэш","Кэш проксирует все записи","Кэш хранит только записи"],c:1,e:"Самый распространённый паттерн: кэш управляется приложением."},
+ {q:"Паттерн Strangler Fig используют для:",o:["Шифрования","Постепенной замены монолита новыми сервисами","Ограничения нагрузки","Резервного копирования"],c:1,e:"Новые сервисы постепенно перехватывают функции монолита."},
+ {q:"Что делает circuit breaker?",o:["Шифрует трафик","Временно прекращает вызовы к сбоящему сервису","Распределяет запросы","Перезапускает сервис"],c:1,e:"Защищает систему от каскадного отказа и даёт сбоящему сервису восстановиться."}],
+soft:[
+ {q:"Definition of Ready — это:",o:["Критерии готовности релиза","Критерии готовности задачи к взятию в работу","Список дефектов","План спринта"],c:1,e:"DoR проверяет, что у команды есть всё для начала разработки."},
+ {q:"Расшифровка MoSCoW:",o:["Must, Should, Could, Won't","Major, Small, Critical, Weak","More, Same, Cut, Wait","Must, Shall, Can, Will"],c:0,e:"Метод приоритизации по обязательности."},
+ {q:"Что означает STAR для поведенческого интервью?",o:["Skills, Tools, Achievements, Roles","Situation, Task, Action, Result","Start, Think, Answer, Repeat","Strategy, Target, Analysis, Report"],c:1,e:"Структура рассказа о реальном опыте с измеримым результатом."},
+ {q:"Требование изменилось посреди спринта. Первый шаг:",o:["Сразу передать разработке","Проигнорировать до следующего спринта","Оценить влияние и согласовать с владельцем продукта","Переписать всё ТЗ"],c:2,e:"Impact-анализ и согласование защищают сроки и качество."},
+ {q:"ADR — это:",o:["Отчёт о дефектах","Запись архитектурного решения с контекстом и последствиями","Схема БД","Регламент релиза"],c:1,e:"Architecture Decision Record сохраняет причину решения."}]
+};
+
+const COMPS=[
+ {id:"elicit",name:"Выявление требований",short:"Выявление",t:"req",lv:["Проводит интервью по готовому списку вопросов, фиксирует ответы","Сам готовит вопросы, замечает противоречия и уточняет","Выбирает техники, ведёт воркшопы, работает с несколькими стейкхолдерами","Выявляет скрытые потребности, управляет ожиданиями, приоритизирует","Формирует видение продукта с бизнесом, разрешает конфликты между подразделениями"]},
+ {id:"docs",name:"Документирование",short:"Документы",t:"req",lv:["Заполняет разделы ТЗ по шаблону","Пишет user story и use case с критериями приёмки","Сам готовит спецификацию фичи, поддерживает трассируемость","Проектирует структуру документации системы, ревьюит коллег","Задаёт стандарты документации для нескольких команд"]},
+ {id:"nfr",name:"Нефункциональные требования",short:"НФТ",t:"req",lv:["Знает, что такое НФТ, и отличает их от функций","Формулирует НФТ с метриками по шаблону","Выявляет НФТ по производительности, надёжности, безопасности","Связывает НФТ с архитектурой, SLO и стоимостью","Определяет НФТ системы целиком и обосновывает затраты"]},
+ {id:"bpmn",name:"Моделирование процессов",short:"BPMN",t:"model",lv:["Читает BPMN-схемы","Рисует процессы со шлюзами и событиями","Моделирует AS-IS и TO-BE, находит узкие места","Моделирует межсистемные процессы с ошибками и компенсациями","Строит архитектуру процессов и связывает её с ИТ-ландшафтом"]},
+ {id:"uml",name:"UML и модели систем",short:"UML",t:"model",lv:["Читает use case и sequence","Рисует sequence и activity","Рисует state machine, ER, компонентные диаграммы","Моделирует асинхронные взаимодействия и отказы","Выбирает нотацию и детализацию (C4) под аудиторию"]},
+ {id:"api",name:"API и протоколы",short:"API",t:"api",lv:["Знает HTTP: методы, коды, JSON","Описывает REST-метод в OpenAPI","Проектирует ресурсы, пагинацию, ошибки, идемпотентность","Версионирование, OAuth2/JWT, gRPC и SOAP","Определяет API-стратегию и стандарты компании"]},
+ {id:"integ",name:"Интеграции",short:"Интеграции",t:"integ",lv:["Понимает разницу синхронного и асинхронного обмена","Описывает простую REST-интеграцию с маппингом","Работает с Kafka и RabbitMQ, ретраи, форматы сообщений","Гарантии доставки, outbox, saga, DLQ","Проектирует интеграционный ландшафт нескольких систем"]},
+ {id:"db",name:"Базы данных и SQL",short:"SQL",t:"db",lv:["SELECT, WHERE, JOIN, GROUP BY","Подзапросы, агрегаты, проектирует таблицу","Нормализация, ER-модель, индексы, транзакции","Оконные функции, EXPLAIN, NoSQL-хранилища","Выбирает хранилища под задачи, модель данных домена"]},
+ {id:"arch",name:"Архитектура систем",short:"Архитектура",t:"arch",lv:["Знает клиент-сервер и слои приложения","Понимает компоненты своей системы","Монолит и микросервисы, кэш, балансировка","Распределённые транзакции, отказоустойчивость, наблюдаемость","Проводит system design, пишет ADR"]},
+ {id:"comm",name:"Коммуникации и процесс",short:"Процесс",t:"soft",lv:["Задаёт вопросы, работает под руководством","Сам ведёт задачи, взаимодействует с разработкой и QA","Ведёт стейкхолдеров, оценивает задачи, участвует в планировании","Управляет изменениями требований, менторит","Выстраивает процесс аналитики, влияет на решения бизнеса"]}
+];
+
+/* ============ STATE ============ */
+const KEY="systemhunter.v1";
+let S={target:"m",lessons:{},tests:{},interviews:[],self:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pct=x=>Math.round(x*100);
+let timerId=null;
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
+
+/* ============ ROUTER ============ */
+let route="home";
+const VIEWS={home:viewHome,trainer:viewTrainer,learn:viewLearn,tests:viewTests,map:viewMap};
+function go(r,opts){ if(!VIEWS[r])r="home"; route=r; stopTimer();
+  if(location.hash.slice(1)!==r){ try{history.replaceState(null,"","#"+r)}catch(e){location.hash=r} }
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===r?"page":"false"));
+  VIEWS[r](opts||{}); window.scrollTo({top:0});
+}
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h!==route)go(h)});
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){e.preventDefault();go(g.dataset.go,g.dataset.topic?{topic:g.dataset.topic}:{})}});
+
+/* ============ HOME ============ */
+function stats(){
+  const read=Object.values(S.lessons).filter(Boolean).length;
+  const passed=Object.values(S.tests).filter(v=>v>=0.8).length;
+  const last=S.interviews.slice(-5);
+  const avg=last.length?pct(last.reduce((s,x)=>s+x.score,0)/last.length):null;
+  const tgt=LV[S.target].i+1;
+  const ready=COMPS.reduce((s,c)=>s+Math.min(S.self[c.id]||0,tgt),0)/(tgt*COMPS.length);
+  return {read,passed,avg,ready:pct(ready),n:S.interviews.length};
+}
+function viewHome(){
+  const st=stats();
+  app.innerHTML=`
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Тренажёр для системных аналитиков</div>
+      <h1 style="margin-top:12px">Выследи вопросы до того, как их зададут на собеседовании</h1>
+      <p class="lead">${QUESTIONS.length} вопросов с эталонными ответами для пяти грейдов, ${Object.keys(LESSONS).length} уроков, тесты по темам и карта компетенций, которая показывает, чего не хватает до следующего уровня.</p>
+      <div class="row"><button class="btn primary" data-go="trainer">Начать интервью</button><button class="btn ghost" data-go="map">Оценить свои навыки</button></div>
+    </div>
+    <div class="ladder">
+      <div class="eyebrow">Целевой грейд</div>
+      <ol>${LEVELS.map(l=>`<li><button data-target="${l.id}" aria-pressed="${S.target===l.id}"><span class="lv">${l.name.replace("Junior","J").replace("Middle","M").replace("Senior","S")}</span><span><b>${l.name}</b> <span class="muted" style="font-size:13px">· ${l.exp}</span></span><span class="tag num">${QUESTIONS.filter(q=>q.l===l.id).length} вопр.</span></button></li>`).join("")}</ol>
+    </div>
+  </section>
+  <section class="stack" style="margin-top:12px">
+    <div class="sections">
+      <button class="sec" data-go="trainer"><span class="k">01 · интервью</span><h3>Тренажёр</h3><p>Вопрос, черновик ответа, эталон и самооценка по ключевым пунктам.</p></button>
+      <button class="sec" data-go="learn"><span class="k">02 · теория</span><h3>Обучение</h3><p>Требования, BPMN и UML, API, SQL, интеграции, архитектура, процесс.</p></button>
+      <button class="sec" data-go="tests"><span class="k">03 · проверка</span><h3>Тесты</h3><p>Короткие тесты по каждой теме и сводный экзамен.</p></button>
+      <button class="sec" data-go="map"><span class="k">04 · рост</span><h3>Карта компетенций</h3><p>Матрица навыков по грейдам и список пробелов.</p></button>
+    </div>
+  </section>
+  <section class="stack" style="margin-top:36px">
+    <h2>Твой прогресс</h2>
+    <div class="stats">
+      <div class="stat"><b>${st.n}</b><span>интервью пройдено${st.avg!==null?` · средний балл ${st.avg}%`:""}</span></div>
+      <div class="stat"><b>${st.read}/${Object.keys(LESSONS).length}</b><span>уроков изучено</span></div>
+      <div class="stat"><b>${st.passed}/${Object.keys(TESTS).length}</b><span>тестов сдано на 80%+</span></div>
+      <div class="stat"><b>${st.ready}%</b><span>соответствие грейду ${LV[S.target].name}</span></div>
+    </div>
+  </section>`;
+  app.querySelectorAll("[data-target]").forEach(b=>b.onclick=()=>{S.target=b.dataset.target;save();viewHome()});
+}
+
+/* ============ TRAINER ============ */
+let T={level:null,topic:"all",lower:true,count:8};
+function pool(){
+  const li=LV[T.level||S.target].i;
+  return QUESTIONS.filter(q=>(T.lower?LV[q.l].i<=li:LV[q.l].i===li)&&(T.topic==="all"||q.t===T.topic));
+}
+function viewTrainer(){
+  if(!T.level)T.level=S.target;
+  const p=pool();
+  const hist=S.interviews.slice(-6).reverse();
+  app.innerHTML=`
+  <div class="stack">
+    <div><div class="eyebrow">Тренажёр интервью</div><h2 style="margin-top:6px">Собеседование на системного аналитика</h2></div>
+    <div class="setup">
+      <div class="panel stack">
+        <div class="field"><span>Грейд</span><div class="row">${LEVELS.map(l=>`<button class="chip" data-lvl="${l.id}" aria-pressed="${T.level===l.id}">${l.name}</button>`).join("")}</div></div>
+        <div class="field"><span>Тема</span><div class="row"><button class="chip" data-tp="all" aria-pressed="${T.topic==="all"}">Все темы</button>${Object.entries(TOPICS).map(([k,v])=>`<button class="chip" data-tp="${k}" aria-pressed="${T.topic===k}">${v}</button>`).join("")}</div></div>
+        <label class="switch"><input type="checkbox" id="lower" ${T.lower?"checked":""}> Добавить вопросы младших грейдов, как на реальном интервью</label>
+        <div class="field"><span>Количество вопросов</span><div class="row">${[5,8,12].map(n=>`<button class="chip num" data-cnt="${n}" aria-pressed="${T.count===n}">${n}</button>`).join("")}</div></div>
+        <div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:16px">
+          <span class="muted">В подборке <b class="num" style="color:var(--ink)">${p.length}</b> вопросов, будет задано ${Math.min(p.length,T.count)}</span>
+          <button class="btn primary" id="start" ${p.length?"":"disabled"}>Начать интервью</button>
+        </div>
+      </div>
+      <aside class="panel stack">
+        <h3>Как проходить</h3>
+        <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:15px;color:var(--muted)">
+          <li>Ответь вслух или набросай ответ в черновике.</li>
+          <li>Открой эталонный ответ.</li>
+          <li>Отметь пункты, которые ты назвал.</li>
+          <li>В конце получишь балл и слабые темы.</li></ol>
+        ${hist.length?`<h3 style="margin-top:8px">Последние попытки</h3><ul class="list">${hist.map(h=>`<li><span>${LV[h.level].name} · ${h.date}</span><b class="num">${pct(h.score)}%</b></li>`).join("")}</ul>`:""}
+      </aside>
+    </div>
+  </div>`;
+  app.querySelectorAll("[data-lvl]").forEach(b=>b.onclick=()=>{T.level=b.dataset.lvl;viewTrainer()});
+  app.querySelectorAll("[data-tp]").forEach(b=>b.onclick=()=>{T.topic=b.dataset.tp;viewTrainer()});
+  app.querySelectorAll("[data-cnt]").forEach(b=>b.onclick=()=>{T.count=+b.dataset.cnt;viewTrainer()});
+  $("#lower").onchange=e=>{T.lower=e.target.checked;viewTrainer()};
+  $("#start").onclick=()=>{
+    const li=LV[T.level].i;
+    const sorted=shuffle(p).sort((a,b)=>(LV[b.l].i===li)-(LV[a.l].i===li)).slice(0,T.count);
+    const q=shuffle(sorted);
+    T.run={q,i:0,res:[],start:Date.now()};
+    askQuestion();
+  };
+}
+function askQuestion(){
+  stopTimer();
+  const R=T.run,q=R.q[R.i];R.qStart=Date.now();R.revealed=false;
+  app.innerHTML=`
+  <div class="stack">
+    <div class="row" style="justify-content:space-between"><div class="eyebrow">Интервью · ${LV[T.level].name}</div><button class="btn ghost" id="quit">Завершить досрочно</button></div>
+    <div class="qcard">
+      <div class="progress"><i style="width:${pct(R.i/R.q.length)}%"></i></div>
+      <div class="qhead"><div class="row"><b class="num">Вопрос ${R.i+1} из ${R.q.length}</b><span class="tag lvl">${LV[q.l].name}</span><span class="tag">${TOPICS[q.t]}</span></div><span class="timer" id="timer" aria-label="Время на вопрос">0:00</span></div>
+      <div class="qbody">
+        <div class="qtext">${q.q}</div>
+        <label class="field"><span>Черновик ответа <span class="muted" style="font-weight:400">· необязательно</span></span><textarea id="draft" placeholder="Тезисы ответа: определения, примеры, плюсы и минусы…"></textarea></label>
+        <div id="reveal"><button class="btn primary" id="show">Показать эталонный ответ</button></div>
+      </div>
+    </div>
+  </div>`;
+  const tEl=$("#timer");
+  timerId=setInterval(()=>{const s=Math.floor((Date.now()-R.qStart)/1000);tEl.textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");tEl.style.color=s>180?"var(--bad)":""},1000);
+  $("#quit").onclick=()=>{stopTimer();finishInterview()};
+  $("#show").onclick=()=>{
+    R.revealed=true;
+    $("#reveal").innerHTML=`<div class="stack">
+      <div><div class="eyebrow" style="margin-bottom:8px">Эталонный ответ</div><div class="answer">${q.a}</div></div>
+      ${q.f?`<div class="follow"><b>Дополнительный вопрос интервьюера:</b> ${q.f}</div>`:""}
+      <div><div class="eyebrow" style="margin-bottom:8px">Отметь, что ты назвал</div><div class="checks">${q.p.map((x,i)=>`<label><input type="checkbox" id="pt${i}"><span>${x}</span></label>`).join("")}</div></div>
+      <div class="row" style="justify-content:flex-end"><button class="btn primary" id="next">${R.i+1<R.q.length?"Следующий вопрос":"Завершить интервью"}</button></div></div>`;
+    $("#next").onclick=()=>{
+      const got=q.p.filter((_,i)=>$("#pt"+i).checked).length;
+      R.res.push({q,score:got/q.p.length,sec:Math.round((Date.now()-R.qStart)/1000)});
+      R.i++; if(R.i<R.q.length)askQuestion(); else {stopTimer();finishInterview()}
+    };
+  };
+}
+function finishInterview(){
+  const R=T.run; const res=R.res;
+  if(!res.length){viewTrainer();return}
+  const score=res.reduce((s,r)=>s+r.score,0)/res.length;
+  const d=new Date();
+  S.interviews.push({level:T.level,score,n:res.length,date:d.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})});
+  save();
+  const by={};res.forEach(r=>{(by[r.q.t]=by[r.q.t]||[]).push(r.score)});
+  const topics=Object.entries(by).map(([t,a])=>({t,s:a.reduce((x,y)=>x+y,0)/a.length})).sort((a,b)=>a.s-b.s);
+  const v=score>=.8?["v-ok","Уровень "+LV[T.level].name+" подтверждён"]:score>=.6?["v-warn","Почти готов, подтяни слабые темы"]:["v-bad","Пока рано, начни с обучения"];
+  const col=s=>s>=.8?"var(--ok)":s>=.6?"var(--warn)":"var(--bad)";
+  app.innerHTML=`
+  <div class="stack">
+    <div class="eyebrow">Результат интервью · ${LV[T.level].name}</div>
+    <div class="setup">
+      <div class="panel stack">
+        <div class="row" style="gap:24px;align-items:flex-end"><div class="score-big">${pct(score)}%</div><div class="stack" style="gap:6px"><span class="verdict ${v[0]}">${v[1]}</span><span class="muted num">${res.length} вопросов · ${Math.round(res.reduce((s,r)=>s+r.sec,0)/60)} мин</span></div></div>
+        <h3>По темам</h3>
+        <div class="bars">${topics.map(x=>`<div class="barrow"><span>${TOPICS[x.t]}</span><span class="track"><i style="width:${pct(x.s)}%;background:${col(x.s)}"></i></span><b class="num" style="text-align:right">${pct(x.s)}%</b></div>`).join("")}</div>
+        <h3>По вопросам</h3>
+        <ul class="list">${res.map(r=>`<li><span>${r.q.q}</span><b class="num" style="color:${col(r.score)};white-space:nowrap">${pct(r.score)}%</b></li>`).join("")}</ul>
+      </div>
+      <aside class="panel stack">
+        <h3>Что повторить</h3>
+        ${topics.filter(x=>x.s<.8).length?topics.filter(x=>x.s<.8).map(x=>`<button class="btn" data-go="learn" data-topic="${x.t}" style="justify-content:space-between">Урок: ${TOPICS[x.t]} <span aria-hidden="true">→</span></button>`).join(""):`<p class="muted" style="margin:0">Все темы на 80% и выше. Попробуй следующий грейд.</p>`}
+        <div class="row" style="border-top:1px solid var(--line);padding-top:14px"><button class="btn primary" id="again">Новое интервью</button></div>
+      </aside>
+    </div>
+  </div>`;
+  $("#again").onclick=viewTrainer;
+}
+
+/* ============ LEARN ============ */
+let curLesson="req";
+function viewLearn(o){
+  if(o.topic&&LESSONS[o.topic])curLesson=o.topic;
+  const L=LESSONS[curLesson];const done=!!S.lessons[curLesson];
+  const keys=Object.keys(LESSONS);const idx=keys.indexOf(curLesson);
+  app.innerHTML=`
+  <div class="stack">
+    <div><div class="eyebrow">Обучение · ${Object.values(S.lessons).filter(Boolean).length} из ${keys.length} уроков изучено</div><h2 style="margin-top:6px">Курс системного аналитика</h2></div>
+    <div class="learn">
+      <nav class="toc" aria-label="Уроки">${keys.map(k=>`<button data-ls="${k}" aria-current="${k===curLesson}"><span>${TOPICS[k]}</span><span class="dot ${S.lessons[k]?"done":""}" aria-label="${S.lessons[k]?"изучен":"не изучен"}"></span></button>`).join("")}</nav>
+      <article class="lesson">
+        <div class="row"><span class="tag">${TOPICS[curLesson]}</span><span class="tag num">${L.min} мин</span><span class="tag">${QUESTIONS.filter(q=>q.t===curLesson).length} вопросов в тренажёре</span></div>
+        <h2>${L.title}</h2>
+        ${L.body}
+        <div class="takeaways"><h3 style="margin-bottom:8px">Запомнить</h3><ul>${L.take.map(t=>`<li>${t}</li>`).join("")}</ul></div>
+        <div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:18px">
+          <label class="switch"><input type="checkbox" id="done" ${done?"checked":""}> Урок изучен</label>
+          <div class="row"><button class="btn" id="totest">Пройти тест по теме</button>${idx<keys.length-1?`<button class="btn primary" data-ls="${keys[idx+1]}">Следующий урок →</button>`:""}</div>
+        </div>
+      </article>
+    </div>
+  </div>`;
+  app.querySelectorAll("[data-ls]").forEach(b=>b.onclick=()=>{curLesson=b.dataset.ls;viewLearn({});window.scrollTo({top:0})});
+  $("#done").onchange=e=>{S.lessons[curLesson]=e.target.checked;save();viewLearn({})};
+  $("#totest").onclick=()=>{go("tests",{start:curLesson})};
+}
+
+/* ============ TESTS ============ */
+let Q=null;
+function viewTests(o){
+  if(o.start){startTest(o.start);return}
+  const best=k=>S.tests[k]!=null?pct(S.tests[k])+"%":"—";
+  app.innerHTML=`
+  <div class="stack">
+    <div><div class="eyebrow">Тесты</div><h2 style="margin-top:6px">Проверь знания по темам</h2></div>
+    <div class="tgrid">
+      <button class="tcard exam" data-test="exam"><span class="eyebrow" style="color:inherit;opacity:.7">Сводный</span><h3>Экзамен по всем темам</h3><p class="muted" style="margin:0;font-size:14.5px">15 случайных вопросов из всех тестов</p><span class="best"><span>Лучший результат</span><b class="num">${best("exam")}</b></span></button>
+      ${Object.keys(TESTS).map(k=>`<button class="tcard" data-test="${k}"><span class="eyebrow">${TESTS[k].length} вопросов</span><h3>${TOPICS[k]}</h3><span class="best"><span>Лучший результат</span><b class="num" style="color:${S.tests[k]>=.8?"var(--ok)":"inherit"}">${best(k)}</b></span></button>`).join("")}
+    </div>
+  </div>`;
+  app.querySelectorAll("[data-test]").forEach(b=>b.onclick=()=>startTest(b.dataset.test));
+}
+function startTest(k){
+  let qs;
+  if(k==="exam")qs=shuffle(Object.entries(TESTS).flatMap(([t,a])=>a.map(x=>({...x,t})))).slice(0,15);
+  else qs=shuffle(TESTS[k].map(x=>({...x,t:k})));
+  Q={k,qs,i:0,right:0,wrong:[]};
+  askTest();
+}
+function askTest(){
+  const q=Q.qs[Q.i];
+  const order=shuffle(q.o.map((t,i)=>({t,i})));
+  app.innerHTML=`
+  <div class="stack" style="max-width:760px">
+    <div class="row" style="justify-content:space-between"><div class="eyebrow">${Q.k==="exam"?"Экзамен":"Тест · "+TOPICS[Q.k]}</div><button class="btn ghost" data-go="tests">К списку тестов</button></div>
+    <div class="qcard">
+      <div class="progress"><i style="width:${pct(Q.i/Q.qs.length)}%"></i></div>
+      <div class="qhead"><b class="num">Вопрос ${Q.i+1} из ${Q.qs.length}</b><span class="tag">${TOPICS[q.t]}</span></div>
+      <div class="qbody">
+        <div class="qtext">${q.q}</div>
+        <div class="opts">${order.map((o,n)=>`<button class="opt" data-i="${o.i}"><span class="l">${"АБВГ"[n]}</span><span>${o.t}</span></button>`).join("")}</div>
+        <div id="fb"></div>
+      </div>
+    </div>
+  </div>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i,ok=i===q.c;
+    if(ok)Q.right++;else Q.wrong.push(q);
+    app.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.i===q.c)x.classList.add("right")});
+    if(!ok)b.classList.add("wrong");
+    $("#fb").innerHTML=`<div class="stack"><p class="explain" style="margin:0"><b style="color:${ok?"var(--ok)":"var(--bad)"}">${ok?"Верно.":"Неверно."}</b> ${q.e}</p><div class="row" style="justify-content:flex-end"><button class="btn primary" id="tn">${Q.i+1<Q.qs.length?"Дальше":"Результат"}</button></div></div>`;
+    $("#tn").focus();
+    $("#tn").onclick=()=>{Q.i++;Q.i<Q.qs.length?askTest():endTest()};
+  });
+}
+function endTest(){
+  const s=Q.right/Q.qs.length;
+  if(S.tests[Q.k]==null||s>S.tests[Q.k])S.tests[Q.k]=s;save();
+  const weak=[...new Set(Q.wrong.map(w=>w.t))];
+  app.innerHTML=`
+  <div class="panel stack" style="max-width:760px">
+    <div class="eyebrow">${Q.k==="exam"?"Экзамен":"Тест · "+TOPICS[Q.k]}</div>
+    <div class="row" style="gap:24px;align-items:flex-end"><div class="score-big">${Q.right}/${Q.qs.length}</div><span class="verdict ${s>=.8?"v-ok":s>=.6?"v-warn":"v-bad"}">${s>=.8?"Сдано":s>=.6?"Почти":"Не сдано"} · ${pct(s)}%</span></div>
+    ${Q.wrong.length?`<h3>Ошибки</h3><ul class="list">${Q.wrong.map(w=>`<li style="flex-direction:column;gap:4px"><span>${w.q}</span><span class="muted">Правильно: ${w.o[w.c]}</span></li>`).join("")}</ul>`:`<p style="margin:0">Без ошибок.</p>`}
+    <div class="row">${weak.map(t=>`<button class="btn" data-go="learn" data-topic="${t}">Урок: ${TOPICS[t]}</button>`).join("")}<button class="btn primary" id="retry">Пройти ещё раз</button><button class="btn ghost" data-go="tests">Все тесты</button></div>
+  </div>`;
+  $("#retry").onclick=()=>startTest(Q.k);
+}
+
+/* ============ MAP ============ */
+function radar(tgt){
+  const n=COMPS.length,cx=240,cy=190,R=130;
+  const pt=(i,v)=>{const a=-Math.PI/2+2*Math.PI*i/n;return[cx+Math.cos(a)*R*v/5,cy+Math.sin(a)*R*v/5]};
+  const poly=vals=>vals.map((v,i)=>pt(i,v).map(x=>x.toFixed(1)).join(",")).join(" ");
+  let g="";
+  for(let k=1;k<=5;k++)g+=`<polygon points="${poly(Array(n).fill(k))}" fill="none" stroke="var(--line)" stroke-width="1"/>`;
+  for(let i=0;i<n;i++){const[x,y]=pt(i,5);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--line)"/>`;
+    const[lx,ly]=pt(i,6.05);const anchor=Math.abs(lx-cx)<8?"middle":lx>cx?"start":"end";
+    g+=`<text x="${lx}" y="${ly+4}" text-anchor="${anchor}">${COMPS[i].short}</text>`}
+  const cur=COMPS.map(c=>S.self[c.id]||0);
+  g+=`<polygon points="${poly(Array(n).fill(tgt))}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>`;
+  g+=`<polygon points="${poly(cur)}" fill="var(--ok)" fill-opacity=".22" stroke="var(--ok)" stroke-width="2"/>`;
+  cur.forEach((v,i)=>{const[x,y]=pt(i,v);g+=`<circle cx="${x}" cy="${y}" r="3.5" fill="var(--ok)"/>`});
+  return `<svg class="radar" viewBox="0 0 480 380" width="100%" role="img" aria-label="Радар компетенций: текущий уровень и цель">${g}</svg>`;
+}
+function viewMap(){
+  const tgt=LV[S.target].i+1;
+  const gaps=COMPS.filter(c=>(S.self[c.id]||0)<tgt);
+  const ready=stats().ready;
+  app.innerHTML=`
+  <div class="stack">
+    <div><div class="eyebrow">Карта компетенций</div><h2 style="margin-top:6px">Что умеет системный аналитик на каждом грейде</h2>
+    <p class="muted" style="margin:8px 0 0;max-width:70ch">Нажми на ячейку с уровнем, который уже уверенно закрываешь. Оранжевая рамка — ожидания целевого грейда.</p></div>
+    <div class="maptop">
+      <div class="panel stack">
+        <div class="row" style="justify-content:space-between"><h3>Пробелы до ${LV[S.target].name}</h3><span class="verdict ${ready>=80?"v-ok":ready>=50?"v-warn":"v-bad"} num">${ready}% готовности</span></div>
+        <div class="field"><span>Целевой грейд</span><div class="row">${LEVELS.map(l=>`<button class="chip" data-target="${l.id}" aria-pressed="${S.target===l.id}">${l.name}</button>`).join("")}</div></div>
+        ${gaps.length?`<div class="gaps">${gaps.map(c=>{const v=S.self[c.id]||0;return `<div class="gap"><span><b>${c.name}</b><br><span class="muted" style="font-size:13.5px">Нужно: ${c.lv[tgt-1]}</span></span><span class="row" style="gap:12px"><span class="pips" aria-label="Сейчас ${v} из ${tgt}">${[1,2,3,4,5].map(k=>`<i class="${k<=v?"on":""} ${k===tgt?"tg":""}"></i>`).join("")}</span><button class="btn" data-go="learn" data-topic="${c.t}" style="padding:6px 12px;font-size:14px">Изучить</button></span></div>`}).join("")}</div>`:`<p style="margin:0">Все компетенции закрыты на уровне ${LV[S.target].name}. Можно ставить цель выше.</p>`}
+      </div>
+      <div class="panel stack">
+        ${radar(tgt)}
+        <div class="legend"><span><i style="background:var(--ok)"></i>Сейчас</span><span><i style="border:2px dashed var(--accent)"></i>Цель: ${LV[S.target].name}</span></div>
+        <button class="btn ghost" id="reset" style="align-self:flex-start">Сбросить самооценку</button>
+      </div>
+    </div>
+    <div class="scroll">
+      <table class="matrix">
+        <thead><tr><th>Компетенция</th>${LEVELS.map((l,i)=>`<th class="${i+1===tgt?"tgt":""}">${l.name}</th>`).join("")}</tr></thead>
+        <tbody>${COMPS.map(c=>{const v=S.self[c.id]||0;return `<tr><th>${c.name}<small>${v?"Сейчас: "+LEVELS[v-1].name:"Не оценено"}</small></th>${c.lv.map((t,i)=>`<td class="${i<v?"have":""} ${i+1===tgt?"need":""}"><button data-c="${c.id}" data-v="${i+1}" aria-pressed="${i<v}">${t}</button></td>`).join("")}</tr>`}).join("")}</tbody>
+      </table>
+    </div>
+  </div>`;
+  app.querySelectorAll("[data-target]").forEach(b=>b.onclick=()=>{S.target=b.dataset.target;save();viewMap()});
+  app.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const id=b.dataset.c,v=+b.dataset.v;S.self[id]=(S.self[id]===v)?v-1:v;save();const y=window.scrollY;viewMap();window.scrollTo({top:y})});
+  let armed=false;
+  $("#reset").onclick=e=>{if(!armed){armed=true;e.target.textContent="Нажми ещё раз для сброса";return}S.self={};save();viewMap()};
+}
+
+/* ============ BOOT ============ */
+go(location.hash.slice(1)||"home");
+</script>
+</body>
+</html>
