@@ -84,13 +84,13 @@ h3{font-weight:600;font-size:18px;line-height:1.3}
 .hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;padding-block:12px 28px}
 .hero p.lead{font-size:18px;color:var(--muted);max-width:56ch;margin:16px 0 22px}
 .ladder{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
-.ladder ol{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column-reverse;gap:6px}
+.ladder ol{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
 .ladder li button{width:100%;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;text-align:left;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2)}
 .ladder li button .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
 .ladder li button .bar i{display:block;height:100%;background:var(--accent)}
 .ladder li button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
 .ladder .lv{font-family:var(--f-display);font-size:12px;font-weight:700}
-.sections{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .sec{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
 .sec:hover{border-color:var(--ink)}
 .sec .k{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
@@ -193,10 +193,38 @@ table.matrix{border-collapse:collapse;min-width:1040px;width:100%;font-size:13.5
 .pips i.on{background:var(--ok)}
 .pips i.tg{box-shadow:inset 0 0 0 1.5px var(--accent)}
 
+/* Results */
+.chart text{fill:var(--muted);font-family:var(--f-mono);font-size:10px}
+.chart .val{fill:var(--ink);font-weight:500}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+table.tt{border-collapse:collapse;width:100%;min-width:600px;font-size:14.5px}
+.tt th,.tt td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.tt thead th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--surface-2)}
+.tt tbody tr:last-child td{border-bottom:0}
+.cellbar{display:grid;grid-template-columns:1fr 42px;gap:10px;align-items:center}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:28px 20px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:12px;align-items:center}
+
+/* Literature */
+.books{display:flex;flex-direction:column;gap:28px}
+.lvlgroup{display:flex;flex-direction:column;gap:10px}
+.lvlgroup > h3{display:flex;align-items:baseline;gap:10px}
+.book{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:16px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px 16px 0;overflow:hidden}
+.book .spine{align-self:stretch;margin:-16px 0;background:var(--line)}
+.book.read .spine{background:var(--ok)}
+.book .who{font-size:13.5px;color:var(--muted)}
+.book .ttl{font-weight:600;font-size:17px;line-height:1.35;margin:2px 0 6px}
+.book p{margin:0 0 10px;font-size:15px;color:var(--muted);max-width:70ch}
+.book .switch{font-size:14px;white-space:nowrap}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.res a{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.res a:hover{border-color:var(--ink)}
+.res a span.u{font-family:var(--f-mono);font-size:12px;color:var(--accent);overflow-wrap:anywhere}
+.res a p{margin:0;font-size:14.5px;color:var(--muted)}
+
 footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:13.5px}
 
 @media (max-width:900px){
-  .hero,.setup,.maptop,.learn{grid-template-columns:1fr}
+  .hero,.setup,.maptop,.learn,.two{grid-template-columns:1fr}
   .sections,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .toc{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
   .toc button{white-space:nowrap}
@@ -207,6 +235,9 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
   .barrow{grid-template-columns:110px 1fr 40px}
   .defs{grid-template-columns:1fr}
   .defs dt{border-bottom:0}
+  .sections{grid-template-columns:1fr}
+  .book{grid-template-columns:6px minmax(0,1fr)}
+  .book .switch{grid-column:2}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -223,7 +254,9 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
       <button data-go="trainer">Тренажёр интервью</button>
       <button data-go="learn">Обучение</button>
       <button data-go="tests">Тесты</button>
+      <button data-go="results">Результаты</button>
       <button data-go="map">Карта компетенций</button>
+      <button data-go="lit">Литература</button>
     </nav>
   </div>
 </header>
@@ -604,7 +637,7 @@ const COMPS=[
 
 /* ============ STATE ============ */
 const KEY="systemhunter.v1";
-let S={target:"m",lessons:{},tests:{},interviews:[],self:{}};
+let S={target:"m",lessons:{},tests:{},interviews:[],self:{},testLog:[],books:{}};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
@@ -617,7 +650,7 @@ function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
 
 /* ============ ROUTER ============ */
 let route="home";
-const VIEWS={home:viewHome,trainer:viewTrainer,learn:viewLearn,tests:viewTests,map:viewMap};
+const VIEWS={home:viewHome,trainer:viewTrainer,learn:viewLearn,tests:viewTests,results:viewResults,map:viewMap,lit:viewLit};
 function go(r,opts){ if(!VIEWS[r])r="home"; route=r; stopTimer();
   if(location.hash.slice(1)!==r){ try{history.replaceState(null,"","#"+r)}catch(e){location.hash=r} }
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===r?"page":"false"));
@@ -647,7 +680,7 @@ function viewHome(){
       <div class="row"><button class="btn primary" data-go="trainer">Начать интервью</button><button class="btn ghost" data-go="map">Оценить свои навыки</button></div>
     </div>
     <div class="ladder">
-      <div class="eyebrow">Целевой грейд</div>
+      <div class="eyebrow">Уровень (целевой грейд)</div>
       <ol>${LEVELS.map(l=>`<li><button data-target="${l.id}" aria-pressed="${S.target===l.id}"><span class="lv">${l.name.replace("Junior","J").replace("Middle","M").replace("Senior","S")}</span><span><b>${l.name}</b> <span class="muted" style="font-size:13px">· ${l.exp}</span></span><span class="tag num">${QUESTIONS.filter(q=>q.l===l.id).length} вопр.</span></button></li>`).join("")}</ol>
     </div>
   </section>
@@ -656,11 +689,13 @@ function viewHome(){
       <button class="sec" data-go="trainer"><span class="k">01 · интервью</span><h3>Тренажёр</h3><p>Вопрос, черновик ответа, эталон и самооценка по ключевым пунктам.</p></button>
       <button class="sec" data-go="learn"><span class="k">02 · теория</span><h3>Обучение</h3><p>Требования, BPMN и UML, API, SQL, интеграции, архитектура, процесс.</p></button>
       <button class="sec" data-go="tests"><span class="k">03 · проверка</span><h3>Тесты</h3><p>Короткие тесты по каждой теме и сводный экзамен.</p></button>
-      <button class="sec" data-go="map"><span class="k">04 · рост</span><h3>Карта компетенций</h3><p>Матрица навыков по грейдам и список пробелов.</p></button>
+      <button class="sec" data-go="results"><span class="k">04 · статистика</span><h3>Результаты</h3><p>История интервью и тестов, динамика баллов, сильные и слабые темы.</p></button>
+      <button class="sec" data-go="map"><span class="k">05 · рост</span><h3>Карта компетенций</h3><p>Матрица навыков по грейдам и список пробелов.</p></button>
+      <button class="sec" data-go="lit"><span class="k">06 · чтение</span><h3>Литература</h3><p>Книги и источники по темам с порядком чтения от Junior к Senior.</p></button>
     </div>
   </section>
   <section class="stack" style="margin-top:36px">
-    <h2>Твой прогресс</h2>
+    <div class="row" style="justify-content:space-between"><h2>Твой прогресс</h2><button class="btn ghost" data-go="results">Все результаты →</button></div>
     <div class="stats">
       <div class="stat"><b>${st.n}</b><span>интервью пройдено${st.avg!==null?` · средний балл ${st.avg}%`:""}</span></div>
       <div class="stat"><b>${st.read}/${Object.keys(LESSONS).length}</b><span>уроков изучено</span></div>
@@ -756,9 +791,10 @@ function finishInterview(){
   if(!res.length){viewTrainer();return}
   const score=res.reduce((s,r)=>s+r.score,0)/res.length;
   const d=new Date();
-  S.interviews.push({level:T.level,score,n:res.length,date:d.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})});
-  save();
   const by={};res.forEach(r=>{(by[r.q.t]=by[r.q.t]||[]).push(r.score)});
+  const tavg={};Object.entries(by).forEach(([t,a])=>tavg[t]=a.reduce((x,y)=>x+y,0)/a.length);
+  S.interviews.push({level:T.level,score,n:res.length,date:d.toLocaleDateString("ru-RU",{day:"numeric",month:"short"}),ts:d.toISOString(),min:Math.round(res.reduce((s,r)=>s+r.sec,0)/60),topics:tavg});
+  save();
   const topics=Object.entries(by).map(([t,a])=>({t,s:a.reduce((x,y)=>x+y,0)/a.length})).sort((a,b)=>a.s-b.s);
   const v=score>=.8?["v-ok","Уровень "+LV[T.level].name+" подтверждён"]:score>=.6?["v-warn","Почти готов, подтяни слабые темы"]:["v-bad","Пока рано, начни с обучения"];
   const col=s=>s>=.8?"var(--ok)":s>=.6?"var(--warn)":"var(--bad)";
@@ -861,7 +897,11 @@ function askTest(){
 }
 function endTest(){
   const s=Q.right/Q.qs.length;
-  if(S.tests[Q.k]==null||s>S.tests[Q.k])S.tests[Q.k]=s;save();
+  if(S.tests[Q.k]==null||s>S.tests[Q.k])S.tests[Q.k]=s;
+  if(!Array.isArray(S.testLog))S.testLog=[];
+  const dd=new Date();S.testLog.push({k:Q.k,s,right:Q.right,n:Q.qs.length,date:dd.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})});
+  if(S.testLog.length>200)S.testLog=S.testLog.slice(-200);
+  save();
   const weak=[...new Set(Q.wrong.map(w=>w.t))];
   app.innerHTML=`
   <div class="panel stack" style="max-width:760px">
@@ -900,7 +940,7 @@ function viewMap(){
     <div class="maptop">
       <div class="panel stack">
         <div class="row" style="justify-content:space-between"><h3>Пробелы до ${LV[S.target].name}</h3><span class="verdict ${ready>=80?"v-ok":ready>=50?"v-warn":"v-bad"} num">${ready}% готовности</span></div>
-        <div class="field"><span>Целевой грейд</span><div class="row">${LEVELS.map(l=>`<button class="chip" data-target="${l.id}" aria-pressed="${S.target===l.id}">${l.name}</button>`).join("")}</div></div>
+        <div class="field"><span>Уровень (целевой грейд)</span><div class="row">${LEVELS.map(l=>`<button class="chip" data-target="${l.id}" aria-pressed="${S.target===l.id}">${l.name}</button>`).join("")}</div></div>
         ${gaps.length?`<div class="gaps">${gaps.map(c=>{const v=S.self[c.id]||0;return `<div class="gap"><span><b>${c.name}</b><br><span class="muted" style="font-size:13.5px">Нужно: ${c.lv[tgt-1]}</span></span><span class="row" style="gap:12px"><span class="pips" aria-label="Сейчас ${v} из ${tgt}">${[1,2,3,4,5].map(k=>`<i class="${k<=v?"on":""} ${k===tgt?"tg":""}"></i>`).join("")}</span><button class="btn" data-go="learn" data-topic="${c.t}" style="padding:6px 12px;font-size:14px">Изучить</button></span></div>`}).join("")}</div>`:`<p style="margin:0">Все компетенции закрыты на уровне ${LV[S.target].name}. Можно ставить цель выше.</p>`}
       </div>
       <div class="panel stack">
@@ -920,6 +960,126 @@ function viewMap(){
   app.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const id=b.dataset.c,v=+b.dataset.v;S.self[id]=(S.self[id]===v)?v-1:v;save();const y=window.scrollY;viewMap();window.scrollTo({top:y})});
   let armed=false;
   $("#reset").onclick=e=>{if(!armed){armed=true;e.target.textContent="Нажми ещё раз для сброса";return}S.self={};save();viewMap()};
+}
+
+/* ============ RESULTS ============ */
+const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<12||h>14)?b:c};
+const colOf=s=>s>=.8?"var(--ok)":s>=.6?"var(--warn)":"var(--bad)";
+function trendChart(list){
+  const W=640,H=230,L=38,Rr=10,Tp=18,B=30,pw=W-L-Rr,ph=H-Tp-B,n=list.length;
+  const y=v=>Tp+ph*(1-v);
+  let g="";
+  [0,.25,.5,.75,1].forEach(v=>{g+=`<line x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${y(v)+3.5}" text-anchor="end">${v*100}</text>`});
+  g+=`<line x1="${L}" x2="${W-Rr}" y1="${y(.8)}" y2="${y(.8)}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${W-Rr}" y="${y(.8)-5}" text-anchor="end" style="fill:var(--accent)">порог 80%</text>`;
+  const step=pw/Math.max(n,1),bw=Math.min(38,step*.62);
+  list.forEach((x,i)=>{
+    const cx=L+step*(i+.5),top=y(x.score),h=Math.max(1,y(0)-top);
+    g+=`<rect x="${(cx-bw/2).toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${colOf(x.score)}"/>`;
+    g+=`<text class="val" x="${cx.toFixed(1)}" y="${(top-5).toFixed(1)}" text-anchor="middle">${pct(x.score)}</text>`;
+    g+=`<text x="${cx.toFixed(1)}" y="${H-B+15}" text-anchor="middle">${x.date||""}</text>`;
+    g+=`<text x="${cx.toFixed(1)}" y="${H-B+27}" text-anchor="middle">${LV[x.level]?LV[x.level].name.replace("Junior","J").replace("Middle","M").replace("Senior","S"):""}</text>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H+4}" width="100%" role="img" aria-label="Баллы последних интервью, в процентах">${g}</svg>`;
+}
+function cellBar(v){
+  if(v==null)return `<span class="muted">—</span>`;
+  return `<span class="cellbar"><span class="track"><i style="width:${pct(v)}%;background:${colOf(v)}"></i></span><b class="num" style="text-align:right">${pct(v)}%</b></span>`;
+}
+function viewResults(){
+  const st=stats(),iv=S.interviews,tl=Array.isArray(S.testLog)?S.testLog:[];
+  const agg={};iv.forEach(x=>{if(x.topics)Object.entries(x.topics).forEach(([t,v])=>{(agg[t]=agg[t]||[]).push(v)})});
+  const rows=Object.keys(TOPICS).map(t=>{const a=agg[t];return{t,iv:a?a.reduce((x,y)=>x+y,0)/a.length:null,ts:S.tests[t]!=null?S.tests[t]:null,ls:!!S.lessons[t]}});
+  rows.forEach(r=>{const v=[r.iv,r.ts].filter(x=>x!=null);r.all=v.length?v.reduce((a,b)=>a+b,0)/v.length:null});
+  const weak=rows.filter(r=>r.all!=null&&r.all<.8).sort((a,b)=>a.all-b.all);
+  const strong=rows.filter(r=>r.all!=null&&r.all>=.8).sort((a,b)=>b.all-a.all);
+  const best=iv.length?Math.max(...iv.map(x=>x.score)):null;
+  const books=Object.values(S.books||{}).filter(Boolean).length;
+  const nothing=!iv.length&&!tl.length;
+  app.innerHTML=`
+  <div class="stack" style="gap:24px">
+    <div><div class="eyebrow">Результаты</div><h2 style="margin-top:6px">Твоя статистика подготовки</h2></div>
+    <div class="stats">
+      <div class="stat"><b>${iv.length}</b><span>${plural(iv.length,"интервью","интервью","интервью")}${best!=null?` · лучший ${pct(best)}%`:""}</span></div>
+      <div class="stat"><b>${st.avg!=null?st.avg+"%":"—"}</b><span>средний балл последних 5 интервью</span></div>
+      <div class="stat"><b>${tl.length}</b><span>${plural(tl.length,"попытка","попытки","попыток")} тестов · сдано ${st.passed} из ${Object.keys(TESTS).length}</span></div>
+      <div class="stat"><b>${st.ready}%</b><span>готовность к уровню ${LV[S.target].name}</span></div>
+    </div>
+    ${nothing?`<div class="empty"><b style="color:var(--ink);font-size:17px">Пока нет результатов</b><span>Пройди интервью или тест, и здесь появятся динамика баллов, сильные и слабые темы.</span><div class="row" style="justify-content:center"><button class="btn primary" data-go="trainer">Начать интервью</button><button class="btn" data-go="tests">Пройти тест</button></div></div>`:""}
+    ${iv.length?`<div class="panel stack"><div class="row" style="justify-content:space-between"><h3>Динамика интервью</h3><span class="muted" style="font-size:14px">последние ${Math.min(iv.length,12)} ${plural(Math.min(iv.length,12),"попытка","попытки","попыток")}, %</span></div>${trendChart(iv.slice(-12))}</div>`:""}
+    <div class="panel stack">
+      <h3>Темы</h3>
+      <div class="scroll" style="border:0;border-radius:0">
+        <table class="tt"><thead><tr><th>Тема</th><th style="width:26%">Интервью, среднее</th><th style="width:26%">Тест, лучший</th><th>Урок</th></tr></thead>
+        <tbody>${rows.map(r=>`<tr><td><b>${TOPICS[r.t]}</b></td><td>${cellBar(r.iv)}</td><td>${cellBar(r.ts)}</td><td>${r.ls?`<span class="verdict v-ok" style="font-size:12.5px;padding:2px 10px">изучен</span>`:`<button class="btn" data-go="learn" data-topic="${r.t}" style="padding:4px 10px;font-size:13.5px">Открыть</button>`}</td></tr>`).join("")}</tbody></table>
+      </div>
+    </div>
+    <div class="two">
+      <div class="panel stack"><h3>Слабые темы</h3>${weak.length?`<div class="gaps">${weak.map(r=>`<div class="gap"><span><b>${TOPICS[r.t]}</b> <span class="num" style="color:${colOf(r.all)}">${pct(r.all)}%</span></span><span class="row"><button class="btn" data-go="learn" data-topic="${r.t}" style="padding:6px 12px;font-size:14px">Урок</button><button class="btn" data-tst="${r.t}" style="padding:6px 12px;font-size:14px">Тест</button></span></div>`).join("")}</div>`:`<p class="muted" style="margin:0">${nothing?"Появятся после первых попыток.":"Слабых тем нет: все пройденные темы на 80% и выше."}</p>`}</div>
+      <div class="panel stack"><h3>Сильные темы</h3>${strong.length?`<ul class="list">${strong.map(r=>`<li><span>${TOPICS[r.t]}</span><b class="num" style="color:var(--ok)">${pct(r.all)}%</b></li>`).join("")}</ul>`:`<p class="muted" style="margin:0">Темы с результатом от 80% появятся здесь.</p>`}
+        <p class="muted" style="margin:0;font-size:14px">Уроков изучено: ${st.read} из ${Object.keys(LESSONS).length} · книг прочитано: ${books} из ${BOOKS.length}</p></div>
+    </div>
+    ${nothing?"":`<div class="two">
+      <div class="panel stack"><h3>История интервью</h3>${iv.length?`<ul class="list">${iv.slice(-15).reverse().map(x=>`<li><span>${x.date} · ${LV[x.level].name} · <span class="muted">${x.n} вопр.${x.min!=null?` · ${x.min} мин`:""}</span></span><b class="num" style="color:${colOf(x.score)}">${pct(x.score)}%</b></li>`).join("")}</ul>`:`<p class="muted" style="margin:0">Интервью ещё не проходились.</p>`}</div>
+      <div class="panel stack"><h3>История тестов</h3>${tl.length?`<ul class="list">${tl.slice(-15).reverse().map(x=>`<li><span>${x.date} · ${x.k==="exam"?"Экзамен":TOPICS[x.k]}</span><b class="num" style="color:${colOf(x.s)}">${x.right}/${x.n}</b></li>`).join("")}</ul>`:`<p class="muted" style="margin:0">Тесты ещё не проходились.</p>`}</div>
+    </div>`}
+    <div class="row"><button class="btn ghost" id="wipe">Сбросить весь прогресс</button><span class="muted" style="font-size:13.5px">Данные хранятся только в этом браузере.</span></div>
+  </div>`;
+  app.querySelectorAll("[data-tst]").forEach(b=>b.onclick=()=>go("tests",{start:b.dataset.tst}));
+  let armed=false;
+  $("#wipe").onclick=e=>{if(!armed){armed=true;e.target.textContent="Нажми ещё раз: всё будет удалено";return}
+    S={target:S.target,lessons:{},tests:{},interviews:[],self:{},testLog:[],books:{}};save();viewResults()};
+}
+
+/* ============ LITERATURE ============ */
+const BOOKS=[
+ {a:"Джефф Сазерленд",t:"Scrum. Революционный метод управления проектами",tp:"soft",l:"j",d:"Как устроены спринты, роли и ритуалы команды, в которой работает аналитик."},
+ {a:"Карл Вигерс, Джой Битти",t:"Разработка требований к программному обеспечению",tp:"req",l:"j",d:"Главная книга профессии: уровни требований, техники выявления, документирование, управление изменениями."},
+ {a:"Майк Кон",t:"Пользовательские истории. Гибкая разработка программного обеспечения",tp:"req",l:"j",d:"Как писать user story, критерии приёмки и разбивать большие истории."},
+ {a:"Мартин Фаулер",t:"UML. Основы",tp:"model",l:"j",d:"Короткое практическое введение в диаграммы, которые реально нужны в работе."},
+ {a:"Алан Бьюли",t:"Изучаем SQL",tp:"db",l:"j",d:"SQL с нуля: выборки, соединения, группировки, подзапросы."},
+ {a:"Алистер Коберн",t:"Современные методы описания функциональных требований к системам",tp:"req",l:"jp",d:"Классика по use case: уровни целей, сценарии, расширения."},
+ {a:"Брюс Сильвер",t:"BPMN Method and Style (на английском)",tp:"model",l:"jp",d:"Как рисовать BPMN-схемы, которые читаются однозначно, и типичные ошибки моделирования."},
+ {a:"Арно Лоре",t:"Проектирование веб-API",tp:"api",l:"jp",d:"Проектирование REST API от задач пользователя: ресурсы, ошибки, безопасность, OpenAPI."},
+ {a:"IIBA",t:"BABOK. Руководство к своду знаний по бизнес-анализу",tp:"req",l:"m",d:"Стандарт бизнес-анализа: области знаний, задачи и техники. Удобен как справочник."},
+ {a:"Энтони Молинаро",t:"SQL. Сборник рецептов",tp:"db",l:"m",d:"Готовые решения типовых задач: оконные функции, иерархии, отчёты."},
+ {a:"Нархид, Шапира, Палино",t:"Apache Kafka. Потоковая обработка и анализ данных",tp:"integ",l:"m",d:"Топики, партиции, гарантии доставки, consumer groups на практике."},
+ {a:"Сэм Ньюмен",t:"Создание микросервисов",tp:"arch",l:"m",d:"Границы сервисов, интеграции, развёртывание и переход от монолита."},
+ {a:"Грегор Хоп, Бобби Вульф",t:"Шаблоны интеграции корпоративных приложений",tp:"integ",l:"mp",d:"Каталог паттернов обмена сообщениями: каналы, маршрутизация, трансформация."},
+ {a:"Крис Ричардсон",t:"Микросервисы. Паттерны разработки и рефакторинга",tp:"arch",l:"mp",d:"Saga, outbox, CQRS, API Gateway: паттерны, которые спрашивают на Middle+."},
+ {a:"Мартин Клеппман",t:"Высоконагруженные приложения. Программирование, масштабирование, поддержка",tp:"arch",l:"mp",d:"Как устроены хранилища, репликация, транзакции и потоковая обработка."},
+ {a:"Алекс Сюй",t:"System Design. Подготовка к сложному интервью",tp:"arch",l:"mp",d:"Разборы типовых задач system design по шагам: требования, оценка нагрузки, схема."},
+ {a:"Эрик Эванс",t:"Предметно-ориентированное проектирование (DDD)",tp:"arch",l:"s",d:"Единый язык, ограниченные контексты и моделирование сложного домена."},
+ {a:"Марк Ричардс, Нил Форд",t:"Фундаментальный подход к программной архитектуре",tp:"arch",l:"s",d:"Архитектурные стили, характеристики качества, компромиссы и ADR."}
+];
+const RESOURCES=[
+ {t:"HTTP на MDN",u:"https://developer.mozilla.org/ru/docs/Web/HTTP",tp:"api",d:"Методы, коды ответов, заголовки, кэширование."},
+ {t:"OpenAPI Specification",u:"https://spec.openapis.org/oas/latest.html",tp:"api",d:"Официальная спецификация формата описания REST API."},
+ {t:"BPMN 2.0 (OMG)",u:"https://www.omg.org/spec/BPMN/2.0/",tp:"model",d:"Официальный стандарт нотации BPMN."},
+ {t:"C4 model",u:"https://c4model.com",tp:"model",d:"Модель описания архитектуры на четырёх уровнях детализации."},
+ {t:"PlantUML",u:"https://plantuml.com",tp:"model",d:"Диаграммы UML из текста: sequence, activity, state и другие."},
+ {t:"Документация PostgreSQL",u:"https://www.postgresql.org/docs/",tp:"db",d:"Справочник по SQL, индексам, транзакциям и уровням изоляции."},
+ {t:"Документация Apache Kafka",u:"https://kafka.apache.org/documentation/",tp:"integ",d:"Архитектура, настройки продюсеров и консьюмеров, гарантии доставки."},
+ {t:"Enterprise Integration Patterns",u:"https://www.enterpriseintegrationpatterns.com",tp:"integ",d:"Сайт-каталог интеграционных паттернов к книге Хопа и Вульфа."},
+ {t:"microservices.io",u:"https://microservices.io/patterns/",tp:"arch",d:"Каталог паттернов микросервисной архитектуры Криса Ричардсона."}
+];
+let litTopic="all";
+function viewLit(){
+  if(!S.books)S.books={};
+  const f=x=>litTopic==="all"||x.tp===litTopic;
+  const list=BOOKS.filter(f),res=RESOURCES.filter(f);
+  const read=BOOKS.filter(b=>S.books[b.t]).length;
+  const used=Object.keys(TOPICS).filter(t=>BOOKS.some(b=>b.tp===t)||RESOURCES.some(r=>r.tp===t));
+  app.innerHTML=`
+  <div class="stack" style="gap:24px">
+    <div><div class="eyebrow">Литература · прочитано ${read} из ${BOOKS.length}</div><h2 style="margin-top:6px">Что читать системному аналитику</h2>
+    <p class="muted" style="margin:8px 0 0;max-width:70ch">Книги расположены по уровням: начинай с Junior и двигайся к Senior. Отмечай прочитанное, отметки сохраняются в браузере.</p></div>
+    <div class="row"><button class="chip" data-lt="all" aria-pressed="${litTopic==="all"}">Все темы</button>${used.map(t=>`<button class="chip" data-lt="${t}" aria-pressed="${litTopic===t}">${TOPICS[t]}</button>`).join("")}</div>
+    <div class="books">${LEVELS.map(lv=>{const g=list.filter(b=>b.l===lv.id);if(!g.length)return"";return `<section class="lvlgroup"><h3>${lv.name} <span class="muted num" style="font-weight:400;font-size:14px">${g.length} ${g.length===1?"книга":g.length<5?"книги":"книг"}</span></h3>
+      ${g.map(b=>{const i=BOOKS.indexOf(b),r=!!S.books[b.t];return `<div class="book ${r?"read":""}"><span class="spine"></span><div><div class="who">${b.a}</div><div class="ttl">${b.t}</div><p>${b.d}</p><span class="tag">${TOPICS[b.tp]}</span></div><label class="switch"><input type="checkbox" id="bk${i}" data-bk="${i}" ${r?"checked":""}> Прочитал</label></div>`}).join("")}</section>`}).join("")}</div>
+    ${res.length?`<section class="stack"><h3>Документация и онлайн-источники</h3><div class="res">${res.map(r=>`<a href="${r.u}" target="_blank" rel="noopener"><b>${r.t}</b><p>${r.d}</p><span class="u">${r.u.replace(/^https:\/\//,"")}</span></a>`).join("")}</div></section>`:""}
+  </div>`;
+  app.querySelectorAll("[data-lt]").forEach(b=>b.onclick=()=>{litTopic=b.dataset.lt;viewLit()});
+  app.querySelectorAll("[data-bk]").forEach(c=>c.onchange=()=>{const b=BOOKS[+c.dataset.bk];S.books[b.t]=c.checked;save();const y=window.scrollY;viewLit();window.scrollTo({top:y})});
 }
 
 /* ============ BOOT ============ */
